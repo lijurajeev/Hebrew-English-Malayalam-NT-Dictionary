@@ -178,23 +178,24 @@ function cacheDOMRefs() {
   dom = {
     grid:           document.getElementById('dictionary-grid'),
     searchInput:    document.getElementById('search-input'),
+    searchClear:    document.getElementById('search-clear'),
     posFilter:      document.getElementById('pos-filter'),
     tagFilter:      document.getElementById('tag-filter'),
     sortSelect:     document.getElementById('sort-select'),
     clearBtn:       document.getElementById('clear-filters'),
+    resetSearch:    document.getElementById('reset-search'),
     wordCount:      document.getElementById('word-count'),
-    bookFilters:    document.getElementById('book-filters'),
+    visibleCount:   document.getElementById('visible-count'),
+    noResultsMsg:   document.getElementById('no-results-msg'),
+    bookFilters:    document.getElementById('book-pills'),
     modalOverlay:   document.getElementById('modal-overlay'),
     modalContent:   document.getElementById('modal-content'),
     modalClose:     document.getElementById('modal-close'),
-    darkToggle:     document.getElementById('dark-mode-toggle'),
+    darkToggle:     document.getElementById('theme-toggle'),
     backToTop:      document.getElementById('back-to-top'),
-    navToggle:      document.getElementById('nav-toggle'),
-    navbar:         document.getElementById('navbar'),
-    loadingMore:    document.getElementById('loading-more'),
-    statTotal:      document.getElementById('stat-total'),
-    statBooks:      document.getElementById('stat-books'),
-    statCategories: document.getElementById('stat-categories'),
+    navToggle:      document.getElementById('hamburger'),
+    mobileMenu:     document.getElementById('mobile-menu'),
+    loadingMore:    document.getElementById('scroll-sentinel'),
     pronounceTable: document.getElementById('pronunciation-table'),
     vowelTable:     document.getElementById('vowel-table'),
   };
@@ -222,21 +223,58 @@ function renderStatistics() {
 // Book Filter Pills
 // ---------------------------------------------------------------------------
 
-function renderBookPills() {
+function setupBookPills() {
   if (!dom.bookFilters) return;
 
-  const fragment = document.createDocumentFragment();
-  NT_BOOKS.forEach(book => {
-    const pill = document.createElement('button');
-    pill.type = 'button';
-    pill.className = 'book-pill';
-    pill.dataset.book = book;
-    pill.textContent = book;
-    pill.setAttribute('aria-pressed', 'false');
-    pill.addEventListener('click', () => toggleBookFilter(book, pill));
-    fragment.appendChild(pill);
+  dom.bookFilters.querySelectorAll('.book-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const bookVal = pill.dataset.book;
+      if (bookVal === 'all') {
+        // Clear all book filters
+        state.activeBooks.clear();
+        dom.bookFilters.querySelectorAll('.book-pill').forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-pressed', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
+      } else {
+        // Remove "All" active state
+        const allPill = dom.bookFilters.querySelector('[data-book="all"]');
+        if (allPill) {
+          allPill.classList.remove('active');
+          allPill.setAttribute('aria-pressed', 'false');
+        }
+        // Map data-book attribute to firstBook values
+        const bookName = bookVal.replace(/^(\d)/, '$1 ')
+          .replace('corinthians', 'Corinthians')
+          .replace('thessalonians', 'Thessalonians')
+          .replace('timothy', 'Timothy')
+          .replace('peter', 'Peter')
+          .replace('john', 'John')
+          .replace(/^matthew$/i, 'Matthew')
+          .replace(/^mark$/i, 'Mark')
+          .replace(/^luke$/i, 'Luke')
+          .replace(/^john$/i, 'John')
+          .replace(/^acts$/i, 'Acts')
+          .replace(/^romans$/i, 'Romans')
+          .replace(/^galatians$/i, 'Galatians')
+          .replace(/^ephesians$/i, 'Ephesians')
+          .replace(/^philippians$/i, 'Philippians')
+          .replace(/^colossians$/i, 'Colossians')
+          .replace(/^titus$/i, 'Titus')
+          .replace(/^philemon$/i, 'Philemon')
+          .replace(/^hebrews$/i, 'Hebrews')
+          .replace(/^james$/i, 'James')
+          .replace(/^jude$/i, 'Jude')
+          .replace(/^revelation$/i, 'Revelation');
+        toggleBookFilter(bookName, pill);
+        return; // toggleBookFilter calls applyFilters
+      }
+      applyFilters();
+      updateURLHash();
+    });
   });
-  dom.bookFilters.appendChild(fragment);
 }
 
 function toggleBookFilter(book, pillEl) {
@@ -447,9 +485,18 @@ function renderCards(append = false) {
 }
 
 function updateWordCount() {
-  if (!dom.wordCount) return;
   const total = (DICTIONARY_DATA && DICTIONARY_DATA.length) || 0;
-  dom.wordCount.textContent = `Showing ${state.filtered.length.toLocaleString()} of ${total.toLocaleString()} words`;
+  const count = state.filtered.length;
+
+  if (dom.visibleCount) {
+    dom.visibleCount.textContent = count.toLocaleString();
+  }
+  if (dom.wordCount) {
+    dom.wordCount.hidden = (count === 0);
+  }
+  if (dom.noResultsMsg) {
+    dom.noResultsMsg.hidden = (count > 0);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -561,16 +608,14 @@ function openModal(entry) {
     : '';
 
   dom.modalContent.innerHTML = `
-    <button id="modal-close" class="modal-close" aria-label="Close modal">
-      <i class="fas fa-times" aria-hidden="true"></i>
-    </button>
-
+    <div class="modal-header">
     <div class="modal-hebrew" lang="he" dir="rtl">${escapeHtml(entry.hebrew || '')}</div>
     <div class="modal-translit">${escapeHtml(entry.transliteration || '')}</div>
     <div class="modal-pronunciation">/${escapeHtml(entry.pronunciation || '')}/</div>
-    <span class="modal-pos-badge">${escapeHtml(entry.partOfSpeech || '')}</span>
+    <span class="modal-pos-badge card-pos">${escapeHtml(entry.partOfSpeech || '')}</span>
+    </div>
 
-    <div class="modal-divider"></div>
+    <hr class="modal-divider" />
 
     <section class="modal-section">
       <h3 class="modal-section-title">Meanings</h3>
@@ -611,11 +656,9 @@ function openModal(entry) {
     </section>
   `;
 
-  // Re-cache close button (was just created)
-  dom.modalClose = document.getElementById('modal-close');
-  dom.modalClose.addEventListener('click', closeModal);
+  // Close button is in the HTML (outside modal-content), so no need to re-cache
 
-  dom.modalOverlay.classList.add('open');
+  dom.modalOverlay.classList.add('active');
   document.body.classList.add('modal-open');
   dom.modalOverlay.setAttribute('aria-hidden', 'false');
 
@@ -629,7 +672,7 @@ function openModal(entry) {
 function closeModal() {
   if (!dom.modalOverlay) return;
   state.modalOpen = false;
-  dom.modalOverlay.classList.remove('open');
+  dom.modalOverlay.classList.remove('active');
   document.body.classList.remove('modal-open');
   dom.modalOverlay.setAttribute('aria-hidden', 'true');
 
@@ -683,29 +726,22 @@ function loadDarkModePreference() {
   const saved = localStorage.getItem('darkMode');
   if (saved === 'true') {
     document.body.classList.add('dark-mode');
+    document.documentElement.setAttribute('data-theme', 'dark');
     updateDarkToggleIcon(true);
   }
 }
 
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle('dark-mode');
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   localStorage.setItem('darkMode', isDark);
   updateDarkToggleIcon(isDark);
 }
 
 function updateDarkToggleIcon(isDark) {
   if (!dom.darkToggle) return;
-  const icon = dom.darkToggle.querySelector('i');
-  if (!icon) return;
-  if (isDark) {
-    icon.classList.remove('fa-moon');
-    icon.classList.add('fa-sun');
-    dom.darkToggle.setAttribute('aria-label', 'Switch to light mode');
-  } else {
-    icon.classList.remove('fa-sun');
-    icon.classList.add('fa-moon');
-    dom.darkToggle.setAttribute('aria-label', 'Switch to dark mode');
-  }
+  dom.darkToggle.setAttribute('aria-pressed', isDark);
+  dom.darkToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
 }
 
 // ---------------------------------------------------------------------------
@@ -731,28 +767,36 @@ function setupBackToTop() {
 // ---------------------------------------------------------------------------
 
 function setupMobileMenu() {
-  if (!dom.navToggle || !dom.navbar) return;
+  if (!dom.navToggle || !dom.mobileMenu) return;
 
   dom.navToggle.addEventListener('click', e => {
     e.stopPropagation();
-    dom.navbar.classList.toggle('nav-open');
-    const isOpen = dom.navbar.classList.contains('nav-open');
+    const isOpen = dom.mobileMenu.classList.toggle('active');
     dom.navToggle.setAttribute('aria-expanded', isOpen);
+    dom.mobileMenu.setAttribute('aria-hidden', !isOpen);
+    // Toggle tabindex on mobile links
+    dom.mobileMenu.querySelectorAll('a').forEach(a => {
+      a.tabIndex = isOpen ? 0 : -1;
+    });
   });
 
   // Close on outside click
   document.addEventListener('click', e => {
-    if (dom.navbar.classList.contains('nav-open') && !dom.navbar.contains(e.target)) {
-      dom.navbar.classList.remove('nav-open');
+    if (dom.mobileMenu.classList.contains('active') &&
+        !dom.mobileMenu.contains(e.target) &&
+        !dom.navToggle.contains(e.target)) {
+      dom.mobileMenu.classList.remove('active');
       dom.navToggle.setAttribute('aria-expanded', 'false');
+      dom.mobileMenu.setAttribute('aria-hidden', 'true');
     }
   });
 
   // Close on nav link click
-  dom.navbar.querySelectorAll('a').forEach(link => {
+  dom.mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
-      dom.navbar.classList.remove('nav-open');
+      dom.mobileMenu.classList.remove('active');
       dom.navToggle.setAttribute('aria-expanded', 'false');
+      dom.mobileMenu.setAttribute('aria-hidden', 'true');
     });
   });
 }
@@ -907,16 +951,22 @@ function clearAllFilters() {
   state.sortMode    = 'appearance';
 
   if (dom.searchInput) dom.searchInput.value = '';
-  if (dom.posFilter)   dom.posFilter.value   = '';
-  if (dom.tagFilter)   dom.tagFilter.value   = '';
+  if (dom.searchClear) dom.searchClear.hidden = true;
+  if (dom.posFilter)   dom.posFilter.value   = 'all';
+  if (dom.tagFilter)   dom.tagFilter.value   = 'all';
   if (dom.sortSelect)  dom.sortSelect.value  = 'appearance';
 
-  // Deactivate all book pills
+  // Deactivate all book pills and activate "All"
   if (dom.bookFilters) {
     dom.bookFilters.querySelectorAll('.book-pill').forEach(p => {
       p.classList.remove('active');
       p.setAttribute('aria-pressed', 'false');
     });
+    const allPill = dom.bookFilters.querySelector('[data-book="all"]');
+    if (allPill) {
+      allPill.classList.add('active');
+      allPill.setAttribute('aria-pressed', 'true');
+    }
   }
 
   history.replaceState(null, '', window.location.pathname);
@@ -932,14 +982,34 @@ function setupEventListeners() {
   if (dom.searchInput) {
     dom.searchInput.addEventListener('input', debounce(e => {
       state.searchQuery = e.target.value.trim();
+      // Show/hide clear button
+      if (dom.searchClear) {
+        dom.searchClear.hidden = !state.searchQuery;
+      }
       applyFilters();
     }, 300));
+  }
+
+  // Search clear button
+  if (dom.searchClear) {
+    dom.searchClear.addEventListener('click', () => {
+      if (dom.searchInput) dom.searchInput.value = '';
+      state.searchQuery = '';
+      dom.searchClear.hidden = true;
+      applyFilters();
+      if (dom.searchInput) dom.searchInput.focus();
+    });
+  }
+
+  // Reset search link in no-results message
+  if (dom.resetSearch) {
+    dom.resetSearch.addEventListener('click', clearAllFilters);
   }
 
   // Part-of-speech filter
   if (dom.posFilter) {
     dom.posFilter.addEventListener('change', e => {
-      state.activePOS = e.target.value;
+      state.activePOS = e.target.value === 'all' ? '' : e.target.value;
       applyFilters();
     });
   }
@@ -947,7 +1017,7 @@ function setupEventListeners() {
   // Tag filter
   if (dom.tagFilter) {
     dom.tagFilter.addEventListener('change', e => {
-      state.activeTag = e.target.value;
+      state.activeTag = e.target.value === 'all' ? '' : e.target.value;
       applyFilters();
     });
   }
@@ -971,6 +1041,11 @@ function setupEventListeners() {
       if (e.target === dom.modalOverlay) closeModal();
     });
     dom.modalOverlay.setAttribute('aria-hidden', 'true');
+  }
+
+  // Modal close button
+  if (dom.modalClose) {
+    dom.modalClose.addEventListener('click', closeModal);
   }
 
   // Dark mode toggle
@@ -1004,10 +1079,9 @@ document.addEventListener('DOMContentLoaded', () => {
   state.filtered = state.allData.slice();
 
   // Setup UI components
-  renderBookPills();
+  setupBookPills();
   populateTagFilter();
-  renderStatistics();
-  renderPronunciationGuide();
+  // Stats are already in the HTML; pronunciation guide tables are already rendered in HTML
 
   // Setup observers
   setupAnimationObserver();

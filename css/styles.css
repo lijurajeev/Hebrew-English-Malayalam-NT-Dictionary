@@ -574,7 +574,8 @@ ul { list-style: none; }
   opacity: 0;
   transition: opacity 0.3s;
 }
-#modal-overlay.open { display: flex; opacity: 1; }
+#modal-overlay.active { display: flex; opacity: 1; }
+body.modal-open { overflow: hidden; }
 
 #modal-container {
   background: var(--surface);
@@ -713,6 +714,58 @@ ul { list-style: none; }
   margin-bottom: 8px;
 }
 .modal-pron-guide p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* JS-generated modal content classes */
+.modal-hebrew {
+  font-family: var(--font-he);
+  font-size: 3.5rem;
+  direction: rtl;
+  text-align: center;
+  color: var(--primary);
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.modal-translit {
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.modal-pronunciation {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.modal-pos-badge {
+  display: block;
+  text-align: center;
+  margin: 12px 0 8px;
+}
+.modal-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 16px 0;
+}
+.modal-meaning-row { margin-bottom: 8px; }
+.modal-meaning-en { font-size: 1rem; line-height: 1.7; }
+.modal-meaning-en strong { color: var(--text-secondary); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-meaning-ml { font-family: var(--font-ml); font-size: 1.15rem; line-height: 1.7; }
+.modal-meaning-ml strong { color: var(--text-secondary); font-family: var(--font-en); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-ml-meaning { font-family: var(--font-ml); font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.modal-tags .tag-pill { font-size: 0.78rem; padding: 4px 14px; }
+.modal-pronunc-guide {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+}
+.dark-mode .modal-pronunc-guide { border-color: var(--border); }
+.modal-pronunc-note { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 
 /* --- Pronunciation Guide Section --- */
 .pronunciation-section {

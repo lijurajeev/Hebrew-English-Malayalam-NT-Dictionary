@@ -45,29 +45,23 @@
   <header class="site-header" role="banner">
     <nav class="navbar" aria-label="Main navigation">
       <div class="navbar-brand">
-        <a href="#" class="brand-link" aria-label="Biblical Hebrew NT Dictionary home">
+        <a href="#" class="brand-link" aria-label="Home">
           <i class="fa-solid fa-scroll brand-icon" aria-hidden="true"></i>
-          <div class="brand-text">
-            <span class="brand-title">Biblical Hebrew NT Dictionary</span>
-            <span class="brand-subtitle" lang="he" dir="rtl">עברית</span>
-            <span class="brand-subtitle-sep" aria-hidden="true"> • </span>
-            <span class="brand-subtitle">English</span>
-            <span class="brand-subtitle-sep" aria-hidden="true"> • </span>
-            <span class="brand-subtitle" lang="ml">മലയാളം</span>
-          </div>
+          <span class="brand-title">Hebrew NT Dictionary</span>
         </a>
       </div>
 
       <div class="navbar-actions">
-        <!-- Pronunciation Guide Nav Link -->
-        <a href="#pronunciation-guide" class="nav-link" aria-label="Pronunciation guide">
-          <i class="fa-solid fa-book-open" aria-hidden="true"></i>
-          <span class="nav-link-label">Guide</span>
+        <a href="#dictionary" class="nav-action-btn" aria-label="Word list">
+          <i class="fa-solid fa-list" aria-hidden="true"></i>
+          <span class="nav-action-label">Words</span>
         </a>
-
-        <!-- Dark / Light Mode Toggle -->
+        <a href="#pronunciation-guide" class="nav-action-btn" aria-label="Pronunciation guide">
+          <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+          <span class="nav-action-label">Guide</span>
+        </a>
         <button
-          class="theme-toggle"
+          class="nav-action-btn"
           id="theme-toggle"
           aria-label="Toggle dark mode"
           aria-pressed="false"
@@ -75,6 +69,7 @@
         >
           <i class="fa-solid fa-sun theme-icon-light" aria-hidden="true"></i>
           <i class="fa-solid fa-moon theme-icon-dark" aria-hidden="true"></i>
+          <span class="nav-action-label">Theme</span>
         </button>
 
         <!-- Hamburger (mobile only) -->
@@ -124,27 +119,6 @@
             <span lang="ml">മലയാളം</span> (Malayalam) translations — an
             invaluable resource for Bible study students.
           </p>
-        </div>
-
-        <!-- Stats Bar -->
-        <div class="stats-bar" role="list" aria-label="Dictionary statistics">
-          <div class="stat-item" role="listitem">
-            <i class="fa-solid fa-language stat-icon" aria-hidden="true"></i>
-            <span class="stat-number">500</span>
-            <span class="stat-label">Total Words</span>
-          </div>
-          <div class="stat-divider" aria-hidden="true"></div>
-          <div class="stat-item" role="listitem">
-            <i class="fa-solid fa-bible stat-icon" aria-hidden="true"></i>
-            <span class="stat-number">27</span>
-            <span class="stat-label">Books Covered</span>
-          </div>
-          <div class="stat-divider" aria-hidden="true"></div>
-          <div class="stat-item" role="listitem">
-            <i class="fa-solid fa-globe stat-icon" aria-hidden="true"></i>
-            <span class="stat-number">3</span>
-            <span class="stat-label">Languages</span>
-          </div>
         </div>
 
         <!-- Search Bar -->
@@ -300,24 +274,23 @@
     <!-- ===================================================
          PRONUNCIATION GUIDE SECTION
     ==================================================== -->
-    <section class="pronunciation-guide" id="pronunciation-guide" aria-labelledby="guide-heading">
+    <section class="pronunciation-section" id="pronunciation-guide" aria-labelledby="guide-heading">
       <div class="container">
-        <header class="section-header">
-          <h2 class="section-title" id="guide-heading">
+        <div class="guide-header">
+          <h2 class="guide-main-title" id="guide-heading">
             <i class="fa-solid fa-book-open" aria-hidden="true"></i>
             Pronunciation Guide
           </h2>
-          <p class="section-subtitle">
-            A quick-reference table for reading Hebrew letters and vowel marks
-            (nikud) used throughout this dictionary.
+          <p class="guide-subtitle">
+            A quick-reference for reading Hebrew letters and vowel marks (nikud) used throughout this dictionary.
           </p>
-        </header>
+        </div>
 
         <!-- Hebrew Alphabet Table -->
         <div class="guide-block">
-          <h3 class="guide-block-title">Hebrew Alphabet (אָלֶף-בֵּית)</h3>
+          <h3 class="guide-block-heading">Hebrew Alphabet <span class="guide-block-hebrew" lang="he" dir="rtl">(אָלֶף-בֵּית)</span></h3>
           <div class="table-responsive">
-            <table class="guide-table" aria-label="Hebrew alphabet pronunciation guide">
+            <table class="pron-table" aria-label="Hebrew alphabet pronunciation guide">
               <thead>
                 <tr>
                   <th scope="col">Letter</th>
@@ -329,154 +302,154 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">א</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">א</td>
                   <td>Aleph</td>
                   <td class="translit-cell">ʾ</td>
                   <td>Silent / glottal stop</td>
                   <td><span lang="he" dir="rtl">אֱלֹהִים</span> (Elohim)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">בּ / ב</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">בּ / ב</td>
                   <td>Bet / Vet</td>
                   <td class="translit-cell">b / v</td>
                   <td>"b" as in <em>boy</em> / "v" as in <em>vine</em></td>
                   <td><span lang="he" dir="rtl">בֵּן</span> (ben – son)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">גּ / ג</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">גּ / ג</td>
                   <td>Gimel</td>
                   <td class="translit-cell">g</td>
                   <td>"g" as in <em>good</em></td>
                   <td><span lang="he" dir="rtl">גּוֹי</span> (goy – nation)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">דּ / ד</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">דּ / ד</td>
                   <td>Dalet</td>
                   <td class="translit-cell">d</td>
                   <td>"d" as in <em>door</em></td>
                   <td><span lang="he" dir="rtl">דָּם</span> (dam – blood)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ה</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ה</td>
                   <td>He</td>
                   <td class="translit-cell">h</td>
                   <td>"h" as in <em>house</em></td>
                   <td><span lang="he" dir="rtl">הַר</span> (har – mountain)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ו</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ו</td>
                   <td>Vav</td>
                   <td class="translit-cell">v / w</td>
                   <td>"v" as in <em>vine</em></td>
                   <td><span lang="he" dir="rtl">וָו</span> (vav – hook)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ז</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ז</td>
                   <td>Zayin</td>
                   <td class="translit-cell">z</td>
                   <td>"z" as in <em>zero</em></td>
                   <td><span lang="he" dir="rtl">זָהָב</span> (zahav – gold)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ח</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ח</td>
                   <td>Khet</td>
                   <td class="translit-cell">ḥ</td>
                   <td>Guttural "ch" (like Bach)</td>
                   <td><span lang="he" dir="rtl">חַיִּים</span> (chayyim – life)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ט</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ט</td>
                   <td>Tet</td>
                   <td class="translit-cell">ṭ</td>
                   <td>"t" (emphatic)</td>
                   <td><span lang="he" dir="rtl">טוֹב</span> (tov – good)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">י</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">י</td>
                   <td>Yod</td>
                   <td class="translit-cell">y</td>
                   <td>"y" as in <em>yes</em></td>
                   <td><span lang="he" dir="rtl">יֵשׁוּעַ</span> (Yeshua)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">כּ / כ / ך</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">כּ / כ / ך</td>
                   <td>Kaf / Khaf</td>
                   <td class="translit-cell">k / kh</td>
                   <td>"k" as in <em>king</em> / "kh" as in Bach</td>
                   <td><span lang="he" dir="rtl">כֹּהֵן</span> (kohen – priest)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ל</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ל</td>
                   <td>Lamed</td>
                   <td class="translit-cell">l</td>
                   <td>"l" as in <em>love</em></td>
                   <td><span lang="he" dir="rtl">לֵב</span> (lev – heart)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">מ / ם</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">מ / ם</td>
                   <td>Mem</td>
                   <td class="translit-cell">m</td>
                   <td>"m" as in <em>man</em></td>
                   <td><span lang="he" dir="rtl">מֶלֶךְ</span> (melekh – king)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">נ / ן</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">נ / ן</td>
                   <td>Nun</td>
                   <td class="translit-cell">n</td>
                   <td>"n" as in <em>name</em></td>
                   <td><span lang="he" dir="rtl">נָבִיא</span> (navi – prophet)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ס</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ס</td>
                   <td>Samekh</td>
                   <td class="translit-cell">s</td>
                   <td>"s" as in <em>sun</em></td>
                   <td><span lang="he" dir="rtl">סֵפֶר</span> (sefer – book)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ע</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ע</td>
                   <td>Ayin</td>
                   <td class="translit-cell">ʿ</td>
                   <td>Deep guttural (pharyngeal)</td>
                   <td><span lang="he" dir="rtl">עוֹלָם</span> (olam – world/eternity)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">פּ / פ / ף</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">פּ / פ / ף</td>
                   <td>Pe / Fe</td>
                   <td class="translit-cell">p / f</td>
                   <td>"p" as in <em>peace</em> / "f" as in <em>faith</em></td>
                   <td><span lang="he" dir="rtl">פֶּה</span> (peh – mouth)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">צ / ץ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">צ / ץ</td>
                   <td>Tsadi</td>
                   <td class="translit-cell">ts / ṣ</td>
                   <td>"ts" as in <em>its</em></td>
                   <td><span lang="he" dir="rtl">צַדִּיק</span> (tsaddiq – righteous)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ק</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ק</td>
                   <td>Qof</td>
                   <td class="translit-cell">q</td>
                   <td>"k" (back of throat)</td>
                   <td><span lang="he" dir="rtl">קָדוֹשׁ</span> (qadosh – holy)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">ר</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">ר</td>
                   <td>Resh</td>
                   <td class="translit-cell">r</td>
                   <td>Rolled "r"</td>
                   <td><span lang="he" dir="rtl">רוּחַ</span> (ruach – spirit/wind)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">שׁ / שׂ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">שׁ / שׂ</td>
                   <td>Shin / Sin</td>
                   <td class="translit-cell">sh / ś</td>
                   <td>"sh" as in <em>shalom</em> / "s" as in <em>sun</em></td>
                   <td><span lang="he" dir="rtl">שָׁלוֹם</span> (shalom – peace)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">תּ / ת</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">תּ / ת</td>
                   <td>Tav</td>
                   <td class="translit-cell">t</td>
                   <td>"t" as in <em>truth</em></td>
@@ -489,9 +462,9 @@
 
         <!-- Vowel Marks (Nikud) Table -->
         <div class="guide-block">
-          <h3 class="guide-block-title">Vowel Marks — Nikud (נִקּוּד)</h3>
+          <h3 class="guide-block-heading">Vowel Marks — Nikud <span class="guide-block-hebrew" lang="he" dir="rtl">(נִקּוּד)</span></h3>
           <div class="table-responsive">
-            <table class="guide-table" aria-label="Hebrew vowel marks (nikud) pronunciation guide">
+            <table class="pron-table" aria-label="Hebrew vowel marks (nikud) pronunciation guide">
               <thead>
                 <tr>
                   <th scope="col">Mark</th>
@@ -502,73 +475,73 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ַ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ַ</td>
                   <td>Patah</td>
                   <td>"a" as in <em>father</em></td>
                   <td><span lang="he" dir="rtl">דַּ</span> – da</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ָ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ָ</td>
                   <td>Qamats</td>
                   <td>"a" as in <em>father</em> (longer)</td>
                   <td><span lang="he" dir="rtl">שָׁ</span> – sha</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֶ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֶ</td>
                   <td>Segol</td>
                   <td>"e" as in <em>bed</em></td>
                   <td><span lang="he" dir="rtl">בֶּ</span> – be</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֵ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֵ</td>
                   <td>Tsere</td>
                   <td>"e" as in <em>they</em></td>
                   <td><span lang="he" dir="rtl">לֵ</span> – le</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ִ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ִ</td>
                   <td>Khiriq</td>
                   <td>"i" as in <em>machine</em></td>
                   <td><span lang="he" dir="rtl">בִּ</span> – bi</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֹ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֹ</td>
                   <td>Kholam</td>
                   <td>"o" as in <em>go</em></td>
                   <td><span lang="he" dir="rtl">תֹּ</span> – to</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌וּ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌וּ</td>
                   <td>Shureq</td>
                   <td>"u" as in <em>rule</em></td>
                   <td><span lang="he" dir="rtl">רוּ</span> – ru</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֻ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֻ</td>
                   <td>Qibbuts</td>
                   <td>"u" as in <em>rule</em></td>
                   <td><span lang="he" dir="rtl">קֻ</span> – qu</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ְ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ְ</td>
                   <td>Sheva</td>
                   <td>Very short "e" or silent</td>
                   <td><span lang="he" dir="rtl">בְּ</span> – b(e)</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֱ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֱ</td>
                   <td>Hataf Segol</td>
                   <td>Short "e"</td>
                   <td><span lang="he" dir="rtl">אֱ</span> – e</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֲ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֲ</td>
                   <td>Hataf Patah</td>
                   <td>Short "a"</td>
                   <td><span lang="he" dir="rtl">אֲ</span> – a</td>
                 </tr>
                 <tr>
-                  <td class="heb-cell" lang="he" dir="rtl">◌ֳ</td>
+                  <td class="hebrew-letter" lang="he" dir="rtl">◌ֳ</td>
                   <td>Hataf Qamats</td>
                   <td>Short "o"</td>
                   <td><span lang="he" dir="rtl">אֳ</span> – o</td>
@@ -709,21 +682,24 @@
   ==================================================== -->
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner container">
-      <div class="footer-brand">
-        <i class="fa-solid fa-scroll footer-icon" aria-hidden="true"></i>
-        <span class="footer-title">Biblical Hebrew NT Dictionary</span>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <i class="fa-solid fa-scroll footer-brand-icon" aria-hidden="true"></i>
+          <div class="footer-brand-text">
+            <span class="footer-brand-title">Biblical Hebrew NT Dictionary</span>
+            <span class="footer-brand-tagline">For Bible Study Students</span>
+          </div>
+        </div>
+        <div class="footer-langs" aria-label="Supported languages">
+          <span class="footer-lang-badge" lang="he" dir="rtl">עברית</span>
+          <span class="footer-lang-badge">English</span>
+          <span class="footer-lang-badge" lang="ml">മലയാളം</span>
+        </div>
       </div>
-      <div class="footer-meta">
-        <p class="footer-line">Biblical Hebrew NT Dictionary &copy; 2025</p>
-        <p class="footer-line">Based on the <em>Delitzsch Hebrew New Testament</em></p>
-        <p class="footer-line footer-tagline">For Bible Study Students</p>
-      </div>
-      <div class="footer-langs" aria-label="Supported languages">
-        <span class="footer-lang" lang="he" dir="rtl">עברית</span>
-        <span class="footer-lang-sep" aria-hidden="true">•</span>
-        <span class="footer-lang">English</span>
-        <span class="footer-lang-sep" aria-hidden="true">•</span>
-        <span class="footer-lang" lang="ml">മലയാളം</span>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p class="footer-source">Based on the <em>Delitzsch Hebrew New Testament</em></p>
+        <p class="footer-copyright">&copy; 2025 Biblical Hebrew NT Dictionary</p>
       </div>
     </div>
   </footer>

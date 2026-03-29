@@ -177,59 +177,96 @@ function smoothScrollTo(element) {
 // ---------------------------------------------------------------------------
 
 /**
- * Converts an English transliteration of a Hebrew word into Malayalam script.
- * Uses phonetic mapping — approximate but useful as a pronunciation guide.
+ * Converts Hebrew pronunciation notation into Malayalam script.
+ * Uses the pronunciation field (e.g. "SEH-fer") which captures actual
+ * Hebrew sounds, split into syllables for accurate mapping.
+ *
+ * If entry has a manual mlTranslit override, that is used instead.
+ *
+ * @param {object} entry - Dictionary entry with .pronunciation and optional .mlTranslit
+ * @returns {string} Malayalam script transliteration
  */
-function toMalayalamScript(translit) {
-  if (!translit) return '';
-  const t = translit.toLowerCase();
+function getMalayalamTranslit(entry) {
+  if (!entry) return '';
+  // Manual override takes priority
+  if (entry.mlTranslit) return entry.mlTranslit;
+  // Fall back to auto-generation from pronunciation field
+  return pronunciationToMalayalam(entry.pronunciation);
+}
+
+/** Hebrew consonant → Malayalam mapping (longest patterns first) */
+const ML_CONSONANTS = [
+  ['sh', 'ശ'], ['ch', 'ഖ'], ['ts', 'ത്സ'], ['tz', 'ത്സ'],
+  ['kh', 'ഖ'], ['th', 'ത'], ['ph', 'ഫ'],
+  ['b', 'ബ'], ['d', 'ദ'], ['f', 'ഫ'], ['g', 'ഗ'], ['h', 'ഹ'],
+  ['j', 'ജ'], ['k', 'ക'], ['l', 'ല'], ['m', 'മ'], ['n', 'ന'],
+  ['p', 'പ'], ['q', 'ക'], ['r', 'ര'], ['s', 'സ'], ['t', 'ത'],
+  ['v', 'വ'], ['w', 'വ'], ['y', 'യ'], ['z', 'സ']
+];
+
+/** Vowel sounds → Malayalam combining signs (after a consonant) */
+const ML_VOWEL_SIGNS = [
+  ['ah', '\u0D3E'],  // ാ  — "father"
+  ['aw', '\u0D4B'],  // ോ  — "law"
+  ['ay', '\u0D47'],  // േ  — "say"
+  ['eh', '\u0D46'],  // െ  — "bed"
+  ['ee', '\u0D40'],  // ീ  — "machine"
+  ['ei', '\u0D47'],  // േ  — "they"
+  ['oo', '\u0D42'],  // ൂ  — "flute"
+  ['oh', '\u0D4B'],  // ോ  — "go"
+  ['ai', '\u0D48'],  // ൈ  — "aisle"
+  ['au', '\u0D57'],  // ൗ
+  ['a', '\u0D3E'],   // ാ
+  ['e', '\u0D46'],   // െ
+  ['i', '\u0D3F'],   // ി
+  ['o', '\u0D4A'],   // ൊ
+  ['u', '\u0D41']    // ു
+];
+
+/** Vowel sounds → Malayalam standalone vowels (start of syllable) */
+const ML_VOWELS = [
+  ['ah', 'ആ'], ['aw', 'ഓ'], ['ay', 'ഏ'],
+  ['eh', 'എ'], ['ee', 'ഈ'], ['ei', 'ഏ'],
+  ['oo', 'ഊ'], ['oh', 'ഓ'],
+  ['ai', 'ഐ'], ['au', 'ഔ'],
+  ['a', 'ആ'], ['e', 'എ'], ['i', 'ഇ'], ['o', 'ഒ'], ['u', 'ഉ']
+];
+
+const VIRAMA = '\u0D4D'; // ്
+
+/**
+ * Converts a pronunciation string (e.g. "SEH-fer") to Malayalam script.
+ * Processes each syllable separately to preserve phonetic boundaries.
+ */
+function pronunciationToMalayalam(pronunciation) {
+  if (!pronunciation) return '';
+  const syllables = pronunciation.toLowerCase().split(/[-\s]+/).filter(Boolean);
+  return syllables.map(mapSyllableToMalayalam).join('');
+}
+
+/**
+ * Maps a single syllable (e.g. "seh", "fer", "shoo") to Malayalam script.
+ */
+function mapSyllableToMalayalam(syl) {
+  if (!syl) return '';
   let result = '';
   let i = 0;
-  let afterCons = false; // was the last character a consonant?
+  let afterCons = false;
 
-  const virama = '\u0D4D'; // ്
-
-  // Consonant pairs (check longer patterns first)
-  const cons = [
-    ['sh', 'ശ'], ['ch', 'ച'], ['ts', 'ത്സ'], ['tz', 'ത്സ'],
-    ['kh', 'ഖ'], ['th', 'ത'], ['ph', 'ഫ'], ['zh', 'ഴ'],
-    ['b', 'ബ'], ['d', 'ദ'], ['f', 'ഫ'], ['g', 'ഗ'], ['h', 'ഹ'],
-    ['j', 'ജ'], ['k', 'ക'], ['l', 'ല'], ['m', 'മ'], ['n', 'ന'],
-    ['p', 'പ'], ['q', 'ക'], ['r', 'ര'], ['s', 'സ'], ['t', 'ത'],
-    ['v', 'വ'], ['w', 'വ'], ['y', 'യ'], ['z', 'സ']
-  ];
-
-  // Vowel signs (combining, after a consonant)
-  const vsign = [
-    ['aa', '\u0D3E'], ['ee', '\u0D40'], ['oo', '\u0D42'],
-    ['ai', '\u0D48'], ['ei', '\u0D47'], ['au', '\u0D57'],
-    ['ou', '\u0D57'],
-    ['a', '\u0D3E'], ['e', '\u0D46'], ['i', '\u0D3F'],
-    ['o', '\u0D4A'], ['u', '\u0D41']
-  ];
-
-  // Standalone vowels (word-initial or after another vowel)
-  const vowel = [
-    ['aa', 'ആ'], ['ee', 'ഈ'], ['oo', 'ഊ'], ['ai', 'ഐ'],
-    ['ei', 'ഏ'], ['au', 'ഔ'], ['ou', 'ഔ'],
-    ['a', 'ആ'], ['e', 'എ'], ['i', 'ഇ'], ['o', 'ഒ'], ['u', 'ഉ']
-  ];
-
-  while (i < t.length) {
-    const ch = t[i];
-
-    // Skip non-alpha (hyphens, spaces, apostrophes)
-    if (!/[a-z]/.test(ch)) {
-      if (afterCons) { result += virama; afterCons = false; }
+  while (i < syl.length) {
+    // Skip non-alpha (apostrophes, etc.)
+    if (!/[a-z]/.test(syl[i])) {
+      if (afterCons) { result += VIRAMA; afterCons = false; }
       i++;
       continue;
     }
 
-    // Try consonants (longest match first)
     let matched = false;
-    for (const [pat, mal] of cons) {
-      if (t.startsWith(pat, i)) {
-        if (afterCons) result += virama;
+
+    // Try consonants first (longest match)
+    for (const [pat, mal] of ML_CONSONANTS) {
+      if (syl.startsWith(pat, i)) {
+        if (afterCons) result += VIRAMA;
         result += mal;
         afterCons = true;
         i += pat.length;
@@ -239,10 +276,10 @@ function toMalayalamScript(translit) {
     }
 
     if (!matched) {
-      // Try vowels
-      const vmap = afterCons ? vsign : vowel;
+      // Try vowels — use combining signs after consonant, standalone otherwise
+      const vmap = afterCons ? ML_VOWEL_SIGNS : ML_VOWELS;
       for (const [pat, mal] of vmap) {
-        if (t.startsWith(pat, i)) {
+        if (syl.startsWith(pat, i)) {
           result += mal;
           afterCons = false;
           i += pat.length;
@@ -255,7 +292,7 @@ function toMalayalamScript(translit) {
     if (!matched) { i++; afterCons = false; }
   }
 
-  if (afterCons) result += virama;
+  if (afterCons) result += VIRAMA;
   return result;
 }
 
@@ -523,7 +560,7 @@ function buildCardElement(entry, index) {
   const mlText = firstMeaning.ml  || '';
 
   // Malayalam transliteration (auto-generated from English transliteration)
-  const mlTranslit = toMalayalamScript(entry.transliteration);
+  const mlTranslit = getMalayalamTranslit(entry);
 
   card.innerHTML = `
     <div class="card-header">
@@ -739,7 +776,7 @@ function openModal(entry) {
     ? entry.tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')
     : '';
 
-  const mlTranslit = toMalayalamScript(entry.transliteration);
+  const mlTranslit = getMalayalamTranslit(entry);
 
   dom.modalContent.innerHTML = `
     <div class="modal-header">

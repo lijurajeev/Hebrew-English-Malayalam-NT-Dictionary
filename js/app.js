@@ -101,6 +101,8 @@ const state = {
   sortMode: 'appearance',
   /** Whether a modal is open. */
   modalOpen: false,
+  /** Currently displayed entry in modal. */
+  modalEntry: null,
 };
 
 // ---------------------------------------------------------------------------
@@ -191,6 +193,9 @@ function cacheDOMRefs() {
     modalOverlay:   document.getElementById('modal-overlay'),
     modalContent:   document.getElementById('modal-content'),
     modalClose:     document.getElementById('modal-close'),
+    modalPrev:      document.getElementById('modal-prev'),
+    modalNext:      document.getElementById('modal-next'),
+    modalNavCount:  document.getElementById('modal-nav-count'),
     darkToggle:     document.getElementById('theme-toggle'),
     backToTop:      document.getElementById('back-to-top'),
     navToggle:      document.getElementById('hamburger'),
@@ -592,6 +597,10 @@ function openModal(entry) {
 
   modalPreviousFocus = document.activeElement;
   state.modalOpen = true;
+  state.modalEntry = entry;
+
+  // Update nav count
+  updateModalNav(entry);
 
   // Build all meanings rows
   const meaningsHTML = Array.isArray(entry.meanings)
@@ -688,12 +697,43 @@ function closeModal() {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Modal Navigation (Prev/Next)
+// ---------------------------------------------------------------------------
+
+function updateModalNav(entry) {
+  const idx = state.filtered.findIndex(e => e.id === entry.id);
+  if (dom.modalNavCount) {
+    dom.modalNavCount.textContent = `${idx + 1} of ${state.filtered.length}`;
+  }
+  if (dom.modalPrev) dom.modalPrev.disabled = (idx <= 0);
+  if (dom.modalNext) dom.modalNext.disabled = (idx >= state.filtered.length - 1);
+}
+
+function navigateModal(direction) {
+  if (!state.modalEntry) return;
+  const idx = state.filtered.findIndex(e => e.id === state.modalEntry.id);
+  const nextIdx = idx + direction;
+  if (nextIdx >= 0 && nextIdx < state.filtered.length) {
+    openModal(state.filtered[nextIdx]);
+  }
+}
+
 /** Trap keyboard focus inside the modal. */
 function handleModalKeyboard(e) {
   if (!state.modalOpen) return;
 
   if (e.key === 'Escape') {
     closeModal();
+    return;
+  }
+
+  if (e.key === 'ArrowLeft') {
+    navigateModal(-1);
+    return;
+  }
+  if (e.key === 'ArrowRight') {
+    navigateModal(1);
     return;
   }
 
@@ -1046,6 +1086,14 @@ function setupEventListeners() {
   // Modal close button
   if (dom.modalClose) {
     dom.modalClose.addEventListener('click', closeModal);
+  }
+
+  // Modal prev/next navigation
+  if (dom.modalPrev) {
+    dom.modalPrev.addEventListener('click', () => navigateModal(-1));
+  }
+  if (dom.modalNext) {
+    dom.modalNext.addEventListener('click', () => navigateModal(1));
   }
 
   // Dark mode toggle

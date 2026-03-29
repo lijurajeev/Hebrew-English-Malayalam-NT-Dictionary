@@ -612,22 +612,32 @@ body.modal-open { overflow: hidden; }
 
 .modal-nav {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
 }
-.modal-nav button {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+.modal-nav-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   color: var(--text-secondary);
   background: var(--tag-bg);
   font-size: 0.85rem;
+  font-weight: 500;
   transition: all 0.2s;
+  cursor: pointer;
 }
-.modal-nav button:hover { background: var(--primary-light); color: var(--primary); }
-.modal-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+.modal-nav-btn:hover { background: var(--primary-light); color: var(--primary); }
+.modal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.modal-nav-count {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
 
 .modal-body { padding: 24px; }
 

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A dictionary of 500 key Hebrew words from the Delitzsch Hebrew New Testament with English and Malayalam translations. Designed for Bible study students." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Biblical Hebrew NT Dictionary" />
+  <meta property="og:description" content="500 key Hebrew words from the Delitzsch Hebrew New Testament with English and Malayalam translations." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+
+  <title>Biblical Hebrew NT Dictionary | עברית • English • മലയാളം</title>
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📜</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Noto+Sans+Malayalam:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome 6 -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- ===================================================
+       HEADER / NAVBAR (fixed top)
+  ==================================================== -->
+  <header class="site-header" role="banner">
+    <nav class="navbar" aria-label="Main navigation">
+      <div class="navbar-brand">
+        <a href="#" class="brand-link" aria-label="Biblical Hebrew NT Dictionary home">
+          <i class="fa-solid fa-scroll brand-icon" aria-hidden="true"></i>
+          <div class="brand-text">
+            <span class="brand-title">Biblical Hebrew NT Dictionary</span>
+            <span class="brand-subtitle" lang="he" dir="rtl">עברית</span>
+            <span class="brand-subtitle-sep" aria-hidden="true"> • </span>
+            <span class="brand-subtitle">English</span>
+            <span class="brand-subtitle-sep" aria-hidden="true"> • </span>
+            <span class="brand-subtitle" lang="ml">മലയാളം</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="navbar-actions">
+        <!-- Pronunciation Guide Nav Link -->
+        <a href="#pronunciation-guide" class="nav-link" aria-label="Pronunciation guide">
+          <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+          <span class="nav-link-label">Guide</span>
+        </a>
+
+        <!-- Dark / Light Mode Toggle -->
+        <button
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Toggle dark mode"
+          aria-pressed="false"
+          type="button"
+        >
+          <i class="fa-solid fa-sun theme-icon-light" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon theme-icon-dark" aria-hidden="true"></i>
+        </button>
+
+        <!-- Hamburger (mobile only) -->
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Open mobile menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          type="button"
+        >
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" aria-hidden="true">
+      <ul class="mobile-nav-list">
+        <li><a href="#hero" class="mobile-nav-link" tabindex="-1"><i class="fa-solid fa-house" aria-hidden="true"></i> Home</a></li>
+        <li><a href="#dictionary" class="mobile-nav-link" tabindex="-1"><i class="fa-solid fa-list" aria-hidden="true"></i> Word List</a></li>
+        <li><a href="#pronunciation-guide" class="mobile-nav-link" tabindex="-1"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Pronunciation Guide</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="layout-offset" aria-hidden="true"></div>
+
+  <main id="main-content">
+
+    <!-- ===================================================
+         HERO SECTION
+    ==================================================== -->
+    <section class="hero" id="hero" aria-labelledby="hero-heading">
+      <div class="hero-inner container">
+        <div class="hero-copy">
+          <h1 class="hero-heading" id="hero-heading">
+            <span class="hero-hebrew" lang="he" dir="rtl">מילון עברי</span>
+            <span class="hero-heading-main">Hebrew–English–Malayalam<br />New Testament Dictionary</span>
+          </h1>
+          <p class="hero-description">
+            Explore <strong>500 key Hebrew words</strong> drawn from the
+            <em>Delitzsch Hebrew New Testament</em>. Every entry pairs the
+            original Hebrew text with precise English definitions and
+            <span lang="ml">മലയാളം</span> (Malayalam) translations — an
+            invaluable resource for Bible study students.
+          </p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar" role="list" aria-label="Dictionary statistics">
+          <div class="stat-item" role="listitem">
+            <i class="fa-solid fa-language stat-icon" aria-hidden="true"></i>
+            <span class="stat-number">500</span>
+            <span class="stat-label">Total Words</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat-item" role="listitem">
+            <i class="fa-solid fa-bible stat-icon" aria-hidden="true"></i>
+            <span class="stat-number">27</span>
+            <span class="stat-label">Books Covered</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat-item" role="listitem">
+            <i class="fa-solid fa-globe stat-icon" aria-hidden="true"></i>
+            <span class="stat-number">3</span>
+            <span class="stat-label">Languages</span>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="hero-search-wrap" role="search">
+          <label for="search-input" class="sr-only">Search dictionary</label>
+          <div class="search-input-group">
+            <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+            <input
+              type="search"
+              id="search-input"
+              class="search-input"
+              placeholder="Search Hebrew, English, or Malayalam…"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-label="Search Hebrew, English, or Malayalam words"
+            />
+            <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" hidden>
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================
+         FILTER BAR (sticky)
+    ==================================================== -->
+    <section class="filter-bar" id="filter-bar" aria-label="Filter and sort options">
+      <div class="filter-bar-inner container">
+
+        <!-- Book Filter Pills (horizontal scroll) -->
+        <div class="filter-group filter-group--books" role="group" aria-label="Filter by NT book">
+          <div class="book-pills-scroll" id="book-pills" role="list">
+            <button class="book-pill active" data-book="all" role="listitem" type="button" aria-pressed="true">All</button>
+            <button class="book-pill" data-book="matthew" role="listitem" type="button" aria-pressed="false">Matthew</button>
+            <button class="book-pill" data-book="mark" role="listitem" type="button" aria-pressed="false">Mark</button>
+            <button class="book-pill" data-book="luke" role="listitem" type="button" aria-pressed="false">Luke</button>
+            <button class="book-pill" data-book="john" role="listitem" type="button" aria-pressed="false">John</button>
+            <button class="book-pill" data-book="acts" role="listitem" type="button" aria-pressed="false">Acts</button>
+            <button class="book-pill" data-book="romans" role="listitem" type="button" aria-pressed="false">Romans</button>
+            <button class="book-pill" data-book="1corinthians" role="listitem" type="button" aria-pressed="false">1 Cor</button>
+            <button class="book-pill" data-book="2corinthians" role="listitem" type="button" aria-pressed="false">2 Cor</button>
+            <button class="book-pill" data-book="galatians" role="listitem" type="button" aria-pressed="false">Galatians</button>
+            <button class="book-pill" data-book="ephesians" role="listitem" type="button" aria-pressed="false">Ephesians</button>
+            <button class="book-pill" data-book="philippians" role="listitem" type="button" aria-pressed="false">Philippians</button>
+            <button class="book-pill" data-book="colossians" role="listitem" type="button" aria-pressed="false">Colossians</button>
+            <button class="book-pill" data-book="1thessalonians" role="listitem" type="button" aria-pressed="false">1 Thess</button>
+            <button class="book-pill" data-book="2thessalonians" role="listitem" type="button" aria-pressed="false">2 Thess</button>
+            <button class="book-pill" data-book="1timothy" role="listitem" type="button" aria-pressed="false">1 Tim</button>
+            <button class="book-pill" data-book="2timothy" role="listitem" type="button" aria-pressed="false">2 Tim</button>
+            <button class="book-pill" data-book="titus" role="listitem" type="button" aria-pressed="false">Titus</button>
+            <button class="book-pill" data-book="philemon" role="listitem" type="button" aria-pressed="false">Philemon</button>
+            <button class="book-pill" data-book="hebrews" role="listitem" type="button" aria-pressed="false">Hebrews</button>
+            <button class="book-pill" data-book="james" role="listitem" type="button" aria-pressed="false">James</button>
+            <button class="book-pill" data-book="1peter" role="listitem" type="button" aria-pressed="false">1 Peter</button>
+            <button class="book-pill" data-book="2peter" role="listitem" type="button" aria-pressed="false">2 Peter</button>
+            <button class="book-pill" data-book="1john" role="listitem" type="button" aria-pressed="false">1 John</button>
+            <button class="book-pill" data-book="2john" role="listitem" type="button" aria-pressed="false">2 John</button>
+            <button class="book-pill" data-book="3john" role="listitem" type="button" aria-pressed="false">3 John</button>
+            <button class="book-pill" data-book="jude" role="listitem" type="button" aria-pressed="false">Jude</button>
+            <button class="book-pill" data-book="revelation" role="listitem" type="button" aria-pressed="false">Revelation</button>
+          </div>
+        </div>
+
+        <!-- Dropdowns + Sort + Clear -->
+        <div class="filter-controls">
+          <!-- Part of Speech -->
+          <div class="filter-select-wrap">
+            <label for="pos-filter" class="sr-only">Filter by part of speech</label>
+            <select id="pos-filter" class="filter-select" aria-label="Filter by part of speech">
+              <option value="all">All Parts of Speech</option>
+              <option value="noun">Noun</option>
+              <option value="verb">Verb</option>
+              <option value="adjective">Adjective</option>
+              <option value="adverb">Adverb</option>
+              <option value="pronoun">Pronoun</option>
+              <option value="preposition">Preposition</option>
+              <option value="conjunction">Conjunction</option>
+              <option value="particle">Particle</option>
+              <option value="interjection">Interjection</option>
+              <option value="proper-noun">Proper Noun</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+          </div>
+
+          <!-- Tag / Theme -->
+          <div class="filter-select-wrap">
+            <label for="tag-filter" class="sr-only">Filter by theme or tag</label>
+            <select id="tag-filter" class="filter-select" aria-label="Filter by theme or tag">
+              <option value="all">All Themes</option>
+              <option value="covenant">Covenant</option>
+              <option value="worship">Worship</option>
+              <option value="prophecy">Prophecy</option>
+              <option value="salvation">Salvation</option>
+              <option value="law">Law &amp; Torah</option>
+              <option value="messianic">Messianic</option>
+              <option value="kingdom">Kingdom</option>
+              <option value="holiness">Holiness</option>
+              <option value="faith">Faith</option>
+              <option value="prayer">Prayer</option>
+              <option value="sin">Sin &amp; Atonement</option>
+              <option value="names">Divine Names</option>
+              <option value="creation">Creation</option>
+              <option value="family">Family</option>
+              <option value="community">Community</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+          </div>
+
+          <!-- Sort -->
+          <div class="filter-select-wrap">
+            <label for="sort-select" class="sr-only">Sort words</label>
+            <select id="sort-select" class="filter-select" aria-label="Sort words">
+              <option value="appearance">Order of Appearance</option>
+              <option value="hebrew">Alphabetical (Hebrew)</option>
+              <option value="english">Alphabetical (English)</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+          </div>
+
+          <!-- Clear Filters -->
+          <button class="btn-clear-filters" id="clear-filters" type="button" aria-label="Clear all filters">
+            <i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i>
+            <span>Clear</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================
+         MAIN DICTIONARY SECTION
+    ==================================================== -->
+    <section class="dictionary-section" id="dictionary" aria-labelledby="dictionary-heading">
+      <div class="container">
+
+        <!-- Word Count -->
+        <div class="results-meta" role="status" aria-live="polite" aria-atomic="true">
+          <p class="word-count" id="word-count">
+            Showing <strong id="visible-count">500</strong> of <strong>500</strong> words
+          </p>
+          <p class="no-results-msg" id="no-results-msg" hidden aria-live="polite">
+            <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+            No words found matching your search. Try different terms or
+            <button class="inline-link" id="reset-search" type="button">clear all filters</button>.
+          </p>
+        </div>
+
+        <!-- Dictionary Grid (cards injected by app.js) -->
+        <div
+          class="dictionary-grid"
+          id="dictionary-grid"
+          role="list"
+          aria-label="Dictionary word cards"
+        >
+          <!-- Word cards are dynamically generated by js/app.js -->
+        </div>
+
+        <!-- Load More (optional progressive loading) -->
+        <div class="load-more-wrap" id="load-more-wrap" hidden>
+          <button class="btn-load-more" id="load-more" type="button">
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            Load more words
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================
+         PRONUNCIATION GUIDE SECTION
+    ==================================================== -->
+    <section class="pronunciation-guide" id="pronunciation-guide" aria-labelledby="guide-heading">
+      <div class="container">
+        <header class="section-header">
+          <h2 class="section-title" id="guide-heading">
+            <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+            Pronunciation Guide
+          </h2>
+          <p class="section-subtitle">
+            A quick-reference table for reading Hebrew letters and vowel marks
+            (nikud) used throughout this dictionary.
+          </p>
+        </header>
+
+        <!-- Hebrew Alphabet Table -->
+        <div class="guide-block">
+          <h3 class="guide-block-title">Hebrew Alphabet (אָלֶף-בֵּית)</h3>
+          <div class="table-responsive">
+            <table class="guide-table" aria-label="Hebrew alphabet pronunciation guide">
+              <thead>
+                <tr>
+                  <th scope="col">Letter</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Transliteration</th>
+                  <th scope="col">Pronunciation</th>
+                  <th scope="col">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">א</td>
+                  <td>Aleph</td>
+                  <td class="translit-cell">ʾ</td>
+                  <td>Silent / glottal stop</td>
+                  <td><span lang="he" dir="rtl">אֱלֹהִים</span> (Elohim)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">בּ / ב</td>
+                  <td>Bet / Vet</td>
+                  <td class="translit-cell">b / v</td>
+                  <td>"b" as in <em>boy</em> / "v" as in <em>vine</em></td>
+                  <td><span lang="he" dir="rtl">בֵּן</span> (ben – son)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">גּ / ג</td>
+                  <td>Gimel</td>
+                  <td class="translit-cell">g</td>
+                  <td>"g" as in <em>good</em></td>
+                  <td><span lang="he" dir="rtl">גּוֹי</span> (goy – nation)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">דּ / ד</td>
+                  <td>Dalet</td>
+                  <td class="translit-cell">d</td>
+                  <td>"d" as in <em>door</em></td>
+                  <td><span lang="he" dir="rtl">דָּם</span> (dam – blood)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ה</td>
+                  <td>He</td>
+                  <td class="translit-cell">h</td>
+                  <td>"h" as in <em>house</em></td>
+                  <td><span lang="he" dir="rtl">הַר</span> (har – mountain)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ו</td>
+                  <td>Vav</td>
+                  <td class="translit-cell">v / w</td>
+                  <td>"v" as in <em>vine</em></td>
+                  <td><span lang="he" dir="rtl">וָו</span> (vav – hook)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ז</td>
+                  <td>Zayin</td>
+                  <td class="translit-cell">z</td>
+                  <td>"z" as in <em>zero</em></td>
+                  <td><span lang="he" dir="rtl">זָהָב</span> (zahav – gold)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ח</td>
+                  <td>Khet</td>
+                  <td class="translit-cell">ḥ</td>
+                  <td>Guttural "ch" (like Bach)</td>
+                  <td><span lang="he" dir="rtl">חַיִּים</span> (chayyim – life)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ט</td>
+                  <td>Tet</td>
+                  <td class="translit-cell">ṭ</td>
+                  <td>"t" (emphatic)</td>
+                  <td><span lang="he" dir="rtl">טוֹב</span> (tov – good)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">י</td>
+                  <td>Yod</td>
+                  <td class="translit-cell">y</td>
+                  <td>"y" as in <em>yes</em></td>
+                  <td><span lang="he" dir="rtl">יֵשׁוּעַ</span> (Yeshua)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">כּ / כ / ך</td>
+                  <td>Kaf / Khaf</td>
+                  <td class="translit-cell">k / kh</td>
+                  <td>"k" as in <em>king</em> / "kh" as in Bach</td>
+                  <td><span lang="he" dir="rtl">כֹּהֵן</span> (kohen – priest)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ל</td>
+                  <td>Lamed</td>
+                  <td class="translit-cell">l</td>
+                  <td>"l" as in <em>love</em></td>
+                  <td><span lang="he" dir="rtl">לֵב</span> (lev – heart)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">מ / ם</td>
+                  <td>Mem</td>
+                  <td class="translit-cell">m</td>
+                  <td>"m" as in <em>man</em></td>
+                  <td><span lang="he" dir="rtl">מֶלֶךְ</span> (melekh – king)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">נ / ן</td>
+                  <td>Nun</td>
+                  <td class="translit-cell">n</td>
+                  <td>"n" as in <em>name</em></td>
+                  <td><span lang="he" dir="rtl">נָבִיא</span> (navi – prophet)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ס</td>
+                  <td>Samekh</td>
+                  <td class="translit-cell">s</td>
+                  <td>"s" as in <em>sun</em></td>
+                  <td><span lang="he" dir="rtl">סֵפֶר</span> (sefer – book)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ע</td>
+                  <td>Ayin</td>
+                  <td class="translit-cell">ʿ</td>
+                  <td>Deep guttural (pharyngeal)</td>
+                  <td><span lang="he" dir="rtl">עוֹלָם</span> (olam – world/eternity)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">פּ / פ / ף</td>
+                  <td>Pe / Fe</td>
+                  <td class="translit-cell">p / f</td>
+                  <td>"p" as in <em>peace</em> / "f" as in <em>faith</em></td>
+                  <td><span lang="he" dir="rtl">פֶּה</span> (peh – mouth)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">צ / ץ</td>
+                  <td>Tsadi</td>
+                  <td class="translit-cell">ts / ṣ</td>
+                  <td>"ts" as in <em>its</em></td>
+                  <td><span lang="he" dir="rtl">צַדִּיק</span> (tsaddiq – righteous)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ק</td>
+                  <td>Qof</td>
+                  <td class="translit-cell">q</td>
+                  <td>"k" (back of throat)</td>
+                  <td><span lang="he" dir="rtl">קָדוֹשׁ</span> (qadosh – holy)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">ר</td>
+                  <td>Resh</td>
+                  <td class="translit-cell">r</td>
+                  <td>Rolled "r"</td>
+                  <td><span lang="he" dir="rtl">רוּחַ</span> (ruach – spirit/wind)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">שׁ / שׂ</td>
+                  <td>Shin / Sin</td>
+                  <td class="translit-cell">sh / ś</td>
+                  <td>"sh" as in <em>shalom</em> / "s" as in <em>sun</em></td>
+                  <td><span lang="he" dir="rtl">שָׁלוֹם</span> (shalom – peace)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">תּ / ת</td>
+                  <td>Tav</td>
+                  <td class="translit-cell">t</td>
+                  <td>"t" as in <em>truth</em></td>
+                  <td><span lang="he" dir="rtl">תּוֹרָה</span> (Torah – law/teaching)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Vowel Marks (Nikud) Table -->
+        <div class="guide-block">
+          <h3 class="guide-block-title">Vowel Marks — Nikud (נִקּוּד)</h3>
+          <div class="table-responsive">
+            <table class="guide-table" aria-label="Hebrew vowel marks (nikud) pronunciation guide">
+              <thead>
+                <tr>
+                  <th scope="col">Mark</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Sound</th>
+                  <th scope="col">Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ַ</td>
+                  <td>Patah</td>
+                  <td>"a" as in <em>father</em></td>
+                  <td><span lang="he" dir="rtl">דַּ</span> – da</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ָ</td>
+                  <td>Qamats</td>
+                  <td>"a" as in <em>father</em> (longer)</td>
+                  <td><span lang="he" dir="rtl">שָׁ</span> – sha</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֶ</td>
+                  <td>Segol</td>
+                  <td>"e" as in <em>bed</em></td>
+                  <td><span lang="he" dir="rtl">בֶּ</span> – be</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֵ</td>
+                  <td>Tsere</td>
+                  <td>"e" as in <em>they</em></td>
+                  <td><span lang="he" dir="rtl">לֵ</span> – le</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ִ</td>
+                  <td>Khiriq</td>
+                  <td>"i" as in <em>machine</em></td>
+                  <td><span lang="he" dir="rtl">בִּ</span> – bi</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֹ</td>
+                  <td>Kholam</td>
+                  <td>"o" as in <em>go</em></td>
+                  <td><span lang="he" dir="rtl">תֹּ</span> – to</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌וּ</td>
+                  <td>Shureq</td>
+                  <td>"u" as in <em>rule</em></td>
+                  <td><span lang="he" dir="rtl">רוּ</span> – ru</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֻ</td>
+                  <td>Qibbuts</td>
+                  <td>"u" as in <em>rule</em></td>
+                  <td><span lang="he" dir="rtl">קֻ</span> – qu</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ְ</td>
+                  <td>Sheva</td>
+                  <td>Very short "e" or silent</td>
+                  <td><span lang="he" dir="rtl">בְּ</span> – b(e)</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֱ</td>
+                  <td>Hataf Segol</td>
+                  <td>Short "e"</td>
+                  <td><span lang="he" dir="rtl">אֱ</span> – e</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֲ</td>
+                  <td>Hataf Patah</td>
+                  <td>Short "a"</td>
+                  <td><span lang="he" dir="rtl">אֲ</span> – a</td>
+                </tr>
+                <tr>
+                  <td class="heb-cell" lang="he" dir="rtl">◌ֳ</td>
+                  <td>Hataf Qamats</td>
+                  <td>Short "o"</td>
+                  <td><span lang="he" dir="rtl">אֳ</span> – o</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main><!-- /main -->
+
+  <!-- ===================================================
+       WORD DETAIL MODAL
+  ==================================================== -->
+  <div
+    class="modal-overlay"
+    id="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    <div class="modal-container" id="modal-container">
+      <!-- Close -->
+      <button class="modal-close" id="modal-close" type="button" aria-label="Close word detail">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+
+      <!-- Modal content injected by app.js -->
+      <div class="modal-content" id="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+          <div class="modal-hebrew-wrap">
+            <span class="modal-hebrew" id="modal-hebrew" lang="he" dir="rtl"></span>
+            <button class="btn-pronounce" id="modal-pronounce" type="button" aria-label="Hear pronunciation" title="Audio coming soon" disabled>
+              <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="modal-title-group">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <p class="modal-transliteration" id="modal-transliteration"></p>
+            <p class="modal-pronunciation" id="modal-pronunciation"></p>
+          </div>
+          <span class="modal-pos-badge" id="modal-pos"></span>
+        </div>
+
+        <!-- Divider -->
+        <hr class="modal-divider" />
+
+        <!-- Meanings -->
+        <div class="modal-section">
+          <h3 class="modal-section-label">
+            <i class="fa-solid fa-spell-check" aria-hidden="true"></i> English Meanings
+          </h3>
+          <ul class="modal-meanings-list" id="modal-meanings"></ul>
+        </div>
+
+        <!-- Malayalam -->
+        <div class="modal-section">
+          <h3 class="modal-section-label">
+            <i class="fa-solid fa-language" aria-hidden="true"></i>
+            <span lang="ml">മലയാളം</span> Translation
+          </h3>
+          <p class="modal-malayalam" id="modal-malayalam" lang="ml"></p>
+          <p class="modal-ml-meaning" id="modal-ml-meaning" lang="ml"></p>
+        </div>
+
+        <!-- Pronunciation Detail -->
+        <div class="modal-section">
+          <h3 class="modal-section-label">
+            <i class="fa-solid fa-waveform-lines" aria-hidden="true"></i> Pronunciation Notes
+          </h3>
+          <p class="modal-pronotes" id="modal-pronotes"></p>
+          <div class="modal-syllables" id="modal-syllables"></div>
+        </div>
+
+        <!-- First Reference -->
+        <div class="modal-section modal-section--ref">
+          <h3 class="modal-section-label">
+            <i class="fa-solid fa-bookmark" aria-hidden="true"></i> Scripture Reference
+          </h3>
+          <p class="modal-ref" id="modal-ref"></p>
+          <blockquote class="modal-verse" id="modal-verse"></blockquote>
+        </div>
+
+        <!-- Tags -->
+        <div class="modal-section">
+          <h3 class="modal-section-label">
+            <i class="fa-solid fa-tags" aria-hidden="true"></i> Themes
+          </h3>
+          <div class="modal-tags" id="modal-tags"></div>
+        </div>
+
+        <!-- Related Words -->
+        <div class="modal-section" id="modal-related-section">
+          <h3 class="modal-section-label">
+            <i class="fa-solid fa-link" aria-hidden="true"></i> Related Words
+          </h3>
+          <div class="modal-related" id="modal-related"></div>
+        </div>
+
+      </div><!-- /modal-content -->
+
+      <!-- Nav between words -->
+      <div class="modal-nav" aria-label="Navigate between words">
+        <button class="modal-nav-btn" id="modal-prev" type="button" aria-label="Previous word">
+          <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          <span>Prev</span>
+        </button>
+        <span class="modal-nav-count" id="modal-nav-count" aria-live="polite"></span>
+        <button class="modal-nav-btn" id="modal-next" type="button" aria-label="Next word">
+          <span>Next</span>
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div><!-- /modal-container -->
+  </div><!-- /modal-overlay -->
+
+  <!-- ===================================================
+       BACK TO TOP BUTTON
+  ==================================================== -->
+  <button
+    class="back-to-top"
+    id="back-to-top"
+    type="button"
+    aria-label="Scroll back to top"
+    hidden
+  >
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- ===================================================
+       FOOTER
+  ==================================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner container">
+      <div class="footer-brand">
+        <i class="fa-solid fa-scroll footer-icon" aria-hidden="true"></i>
+        <span class="footer-title">Biblical Hebrew NT Dictionary</span>
+      </div>
+      <div class="footer-meta">
+        <p class="footer-line">Biblical Hebrew NT Dictionary &copy; 2024</p>
+        <p class="footer-line">Based on the <em>Delitzsch Hebrew New Testament</em></p>
+        <p class="footer-line footer-tagline">For Bible Study Students</p>
+      </div>
+      <div class="footer-langs" aria-label="Supported languages">
+        <span class="footer-lang" lang="he" dir="rtl">עברית</span>
+        <span class="footer-lang-sep" aria-hidden="true">•</span>
+        <span class="footer-lang">English</span>
+        <span class="footer-lang-sep" aria-hidden="true">•</span>
+        <span class="footer-lang" lang="ml">മലയാളം</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================
+       SCRIPTS
+  ==================================================== -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -101,6 +101,10 @@ const state = {
   sortMode: 'appearance',
   /** Whether a modal is open. */
   modalOpen: false,
+  /** Currently displayed entry in modal. */
+  modalEntry: null,
+  /** Last rendered book name (for section headers). */
+  lastRenderedBook: '',
 };
 
 // ---------------------------------------------------------------------------
@@ -169,6 +173,106 @@ function smoothScrollTo(element) {
 }
 
 // ---------------------------------------------------------------------------
+// Malayalam Transliteration (English → Malayalam script)
+// ---------------------------------------------------------------------------
+
+/**
+ * Converts an English transliteration of a Hebrew word into Malayalam script.
+ * Uses phonetic mapping — approximate but useful as a pronunciation guide.
+ */
+function toMalayalamScript(translit) {
+  if (!translit) return '';
+  const t = translit.toLowerCase();
+  let result = '';
+  let i = 0;
+  let afterCons = false; // was the last character a consonant?
+
+  const virama = '\u0D4D'; // ്
+
+  // Consonant pairs (check longer patterns first)
+  const cons = [
+    ['sh', 'ശ'], ['ch', 'ച'], ['ts', 'ത്സ'], ['tz', 'ത്സ'],
+    ['kh', 'ഖ'], ['th', 'ത'], ['ph', 'ഫ'], ['zh', 'ഴ'],
+    ['b', 'ബ'], ['d', 'ദ'], ['f', 'ഫ'], ['g', 'ഗ'], ['h', 'ഹ'],
+    ['j', 'ജ'], ['k', 'ക'], ['l', 'ല'], ['m', 'മ'], ['n', 'ന'],
+    ['p', 'പ'], ['q', 'ക'], ['r', 'ര'], ['s', 'സ'], ['t', 'ത'],
+    ['v', 'വ'], ['w', 'വ'], ['y', 'യ'], ['z', 'സ']
+  ];
+
+  // Vowel signs (combining, after a consonant)
+  const vsign = [
+    ['aa', '\u0D3E'], ['ee', '\u0D40'], ['oo', '\u0D42'],
+    ['ai', '\u0D48'], ['ei', '\u0D47'], ['au', '\u0D57'],
+    ['ou', '\u0D57'],
+    ['a', '\u0D3E'], ['e', '\u0D46'], ['i', '\u0D3F'],
+    ['o', '\u0D4A'], ['u', '\u0D41']
+  ];
+
+  // Standalone vowels (word-initial or after another vowel)
+  const vowel = [
+    ['aa', 'ആ'], ['ee', 'ഈ'], ['oo', 'ഊ'], ['ai', 'ഐ'],
+    ['ei', 'ഏ'], ['au', 'ഔ'], ['ou', 'ഔ'],
+    ['a', 'ആ'], ['e', 'എ'], ['i', 'ഇ'], ['o', 'ഒ'], ['u', 'ഉ']
+  ];
+
+  while (i < t.length) {
+    const ch = t[i];
+
+    // Skip non-alpha (hyphens, spaces, apostrophes)
+    if (!/[a-z]/.test(ch)) {
+      if (afterCons) { result += virama; afterCons = false; }
+      i++;
+      continue;
+    }
+
+    // Try consonants (longest match first)
+    let matched = false;
+    for (const [pat, mal] of cons) {
+      if (t.startsWith(pat, i)) {
+        if (afterCons) result += virama;
+        result += mal;
+        afterCons = true;
+        i += pat.length;
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
+      // Try vowels
+      const vmap = afterCons ? vsign : vowel;
+      for (const [pat, mal] of vmap) {
+        if (t.startsWith(pat, i)) {
+          result += mal;
+          afterCons = false;
+          i += pat.length;
+          matched = true;
+          break;
+        }
+      }
+    }
+
+    if (!matched) { i++; afterCons = false; }
+  }
+
+  if (afterCons) result += virama;
+  return result;
+}
+
+// ---------------------------------------------------------------------------
+// Hebrew Audio Pronunciation (Web Speech API)
+// ---------------------------------------------------------------------------
+
+function speakHebrew(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'he-IL';
+  utter.rate = 0.7;
+  window.speechSynthesis.speak(utter);
+}
+
+// ---------------------------------------------------------------------------
 // DOM References (populated after DOMContentLoaded)
 // ---------------------------------------------------------------------------
 
@@ -191,6 +295,9 @@ function cacheDOMRefs() {
     modalOverlay:   document.getElementById('modal-overlay'),
     modalContent:   document.getElementById('modal-content'),
     modalClose:     document.getElementById('modal-close'),
+    modalPrev:      document.getElementById('modal-prev'),
+    modalNext:      document.getElementById('modal-next'),
+    modalNavCount:  document.getElementById('modal-nav-count'),
     darkToggle:     document.getElementById('theme-toggle'),
     backToTop:      document.getElementById('back-to-top'),
     navToggle:      document.getElementById('hamburger'),
@@ -415,29 +522,41 @@ function buildCardElement(entry, index) {
   const enText = firstMeaning.en  || '';
   const mlText = firstMeaning.ml  || '';
 
-  // Tags
-  const tagPills = Array.isArray(entry.tags)
-    ? entry.tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')
-    : '';
+  // Malayalam transliteration (auto-generated from English transliteration)
+  const mlTranslit = toMalayalamScript(entry.transliteration);
 
   card.innerHTML = `
     <div class="card-header">
       <span class="card-pos">${escapeHtml(entry.partOfSpeech || '')}</span>
-      <span class="card-ref"><i class="fas fa-book-open" aria-hidden="true"></i> ${escapeHtml(entry.firstRef || '')}</span>
+      <span class="card-book"><i class="fas fa-bookmark" aria-hidden="true"></i> ${escapeHtml(entry.firstBook || '')}</span>
     </div>
-    <div class="card-hebrew" lang="he" dir="rtl">${escapeHtml(entry.hebrew || '')}</div>
-    <div class="card-transliteration">${escapeHtml(entry.transliteration || '')}</div>
-    <div class="card-pronunciation">/${escapeHtml(entry.pronunciation || '')}/</div>
-    <div class="card-divider"></div>
+    <div class="card-hebrew-row">
+      <span class="card-hebrew" lang="he" dir="rtl">${escapeHtml(entry.hebrew || '')}</span>
+      <button class="card-audio-btn" type="button" aria-label="Hear pronunciation" title="Listen to pronunciation">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+    </div>
+    <div class="card-translit-row">
+      <span class="card-transliteration">${escapeHtml(entry.transliteration || '')}</span>
+      <span class="card-translit-sep">·</span>
+      <span class="card-ml-translit" lang="ml">${mlTranslit}</span>
+    </div>
     <div class="card-meanings">
-      <div class="meaning-en"><strong>English:</strong> ${escapeHtml(enText)}</div>
-      <div class="card-malayalam"><strong>മലയാളം:</strong> ${escapeHtml(mlText)}</div>
-      <div class="card-ml-meaning">${escapeHtml(entry.mlMeaning || '')}</div>
+      <div class="meaning-en">${escapeHtml(enText)}</div>
+      <div class="card-malayalam" lang="ml">${escapeHtml(mlText)}</div>
     </div>
-    <div class="card-tags">${tagPills}</div>
   `;
 
-  // Event listeners
+  // Audio button
+  const audioBtn = card.querySelector('.card-audio-btn');
+  if (audioBtn) {
+    audioBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      speakHebrew(entry.hebrew);
+    });
+  }
+
+  // Card click → open modal
   card.addEventListener('click', () => openModal(entry));
   card.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -459,12 +578,21 @@ function renderCards(append = false) {
   if (!append) {
     dom.grid.innerHTML = '';
     state.rendered = 0;
+    state.lastRenderedBook = '';
   }
 
   const batch = state.filtered.slice(state.rendered, state.rendered + BATCH_SIZE);
   const fragment = document.createDocumentFragment();
 
   batch.forEach((entry, i) => {
+    // Insert book section header when book changes (only in appearance sort)
+    if (state.sortMode === 'appearance' && entry.firstBook && entry.firstBook !== state.lastRenderedBook) {
+      const header = document.createElement('div');
+      header.className = 'book-section-header';
+      header.innerHTML = `<i class="fa-solid fa-book-bible" aria-hidden="true"></i> <span>${escapeHtml(entry.firstBook)}</span>`;
+      fragment.appendChild(header);
+      state.lastRenderedBook = entry.firstBook;
+    }
     const card = buildCardElement(entry, state.rendered + i);
     fragment.appendChild(card);
   });
@@ -592,13 +720,17 @@ function openModal(entry) {
 
   modalPreviousFocus = document.activeElement;
   state.modalOpen = true;
+  state.modalEntry = entry;
 
-  // Build all meanings rows
+  // Update nav count
+  updateModalNav(entry);
+
+  // Build meanings rows
   const meaningsHTML = Array.isArray(entry.meanings)
     ? entry.meanings.map(m => `
         <div class="modal-meaning-row">
-          <div class="modal-meaning-en"><strong>English:</strong> ${escapeHtml(m.en || '')}</div>
-          <div class="modal-meaning-ml"><strong>മലയാളം:</strong> ${escapeHtml(m.ml || '')}</div>
+          <div class="modal-meaning-en">${escapeHtml(m.en || '')}</div>
+          <div class="modal-meaning-ml" lang="ml">${escapeHtml(m.ml || '')}</div>
         </div>
       `).join('')
     : '';
@@ -607,54 +739,51 @@ function openModal(entry) {
     ? entry.tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')
     : '';
 
+  const mlTranslit = toMalayalamScript(entry.transliteration);
+
   dom.modalContent.innerHTML = `
     <div class="modal-header">
-    <div class="modal-hebrew" lang="he" dir="rtl">${escapeHtml(entry.hebrew || '')}</div>
-    <div class="modal-translit">${escapeHtml(entry.transliteration || '')}</div>
-    <div class="modal-pronunciation">/${escapeHtml(entry.pronunciation || '')}/</div>
-    <span class="modal-pos-badge card-pos">${escapeHtml(entry.partOfSpeech || '')}</span>
+      <div class="modal-hebrew-row">
+        <span class="modal-hebrew" lang="he" dir="rtl">${escapeHtml(entry.hebrew || '')}</span>
+        <button class="modal-audio-btn" type="button" aria-label="Hear pronunciation" title="Listen to pronunciation">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+      </div>
+      <div class="modal-translit-row">
+        <span class="modal-translit">${escapeHtml(entry.transliteration || '')}</span>
+        <span class="modal-translit-sep">·</span>
+        <span class="modal-ml-translit" lang="ml">${mlTranslit}</span>
+      </div>
+      <div class="modal-pronunciation">/${escapeHtml(entry.pronunciation || '')}/</div>
+      <span class="modal-pos-badge card-pos">${escapeHtml(entry.partOfSpeech || '')}</span>
     </div>
 
     <hr class="modal-divider" />
 
     <section class="modal-section">
-      <h3 class="modal-section-title">Meanings</h3>
+      <h3 class="modal-section-title"><i class="fa-solid fa-spell-check" aria-hidden="true"></i> Meanings</h3>
       ${meaningsHTML}
     </section>
 
-    ${entry.mlMeaning ? `
     <section class="modal-section">
-      <h3 class="modal-section-title">Malayalam Explanation</h3>
-      <p class="modal-ml-meaning">${escapeHtml(entry.mlMeaning)}</p>
-    </section>` : ''}
-
-    <section class="modal-section">
-      <h3 class="modal-section-title">First Occurrence</h3>
+      <h3 class="modal-section-title"><i class="fa-solid fa-book-open" aria-hidden="true"></i> First Occurrence</h3>
       <p class="modal-ref">
-        <i class="fas fa-book-open" aria-hidden="true"></i>
         <strong>${escapeHtml(entry.firstBook || '')}</strong> &mdash; ${escapeHtml(entry.firstRef || '')}
       </p>
     </section>
 
     ${tagsHTML ? `
     <section class="modal-section">
-      <h3 class="modal-section-title">Thematic Tags</h3>
+      <h3 class="modal-section-title"><i class="fa-solid fa-tags" aria-hidden="true"></i> Thematic Tags</h3>
       <div class="modal-tags">${tagsHTML}</div>
     </section>` : ''}
-
-    <section class="modal-section modal-pronunc-guide">
-      <h3 class="modal-section-title">Pronunciation Guide</h3>
-      <p class="modal-pronunc-note">
-        The pronunciation is written in uppercase syllables separated by hyphens.
-        The <strong>capitalised syllable</strong> receives the primary stress.
-        Vowels follow English approximations: <em>AH</em> = "father",
-        <em>EH</em> = "bed", <em>EE</em> = "machine",
-        <em>OH</em> = "go", <em>OO</em> = "flute".
-        <em>KH</em> is a guttural sound as in the Scottish word "loch".
-        The apostrophe <em>'</em> marks a brief glottal stop or silent letter.
-      </p>
-    </section>
   `;
+
+  // Wire up modal audio button
+  const modalAudioBtn = dom.modalContent.querySelector('.modal-audio-btn');
+  if (modalAudioBtn) {
+    modalAudioBtn.addEventListener('click', () => speakHebrew(entry.hebrew));
+  }
 
   // Close button is in the HTML (outside modal-content), so no need to re-cache
 
@@ -688,12 +817,43 @@ function closeModal() {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Modal Navigation (Prev/Next)
+// ---------------------------------------------------------------------------
+
+function updateModalNav(entry) {
+  const idx = state.filtered.findIndex(e => e.id === entry.id);
+  if (dom.modalNavCount) {
+    dom.modalNavCount.textContent = `${idx + 1} of ${state.filtered.length}`;
+  }
+  if (dom.modalPrev) dom.modalPrev.disabled = (idx <= 0);
+  if (dom.modalNext) dom.modalNext.disabled = (idx >= state.filtered.length - 1);
+}
+
+function navigateModal(direction) {
+  if (!state.modalEntry) return;
+  const idx = state.filtered.findIndex(e => e.id === state.modalEntry.id);
+  const nextIdx = idx + direction;
+  if (nextIdx >= 0 && nextIdx < state.filtered.length) {
+    openModal(state.filtered[nextIdx]);
+  }
+}
+
 /** Trap keyboard focus inside the modal. */
 function handleModalKeyboard(e) {
   if (!state.modalOpen) return;
 
   if (e.key === 'Escape') {
     closeModal();
+    return;
+  }
+
+  if (e.key === 'ArrowLeft') {
+    navigateModal(-1);
+    return;
+  }
+  if (e.key === 'ArrowRight') {
+    navigateModal(1);
     return;
   }
 
@@ -1046,6 +1206,14 @@ function setupEventListeners() {
   // Modal close button
   if (dom.modalClose) {
     dom.modalClose.addEventListener('click', closeModal);
+  }
+
+  // Modal prev/next navigation
+  if (dom.modalPrev) {
+    dom.modalPrev.addEventListener('click', () => navigateModal(-1));
+  }
+  if (dom.modalNext) {
+    dom.modalNext.addEventListener('click', () => navigateModal(1));
   }
 
   // Dark mode toggle

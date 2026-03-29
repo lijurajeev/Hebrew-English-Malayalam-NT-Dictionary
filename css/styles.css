@@ -403,13 +403,30 @@ ul { list-style: none; }
   gap: 24px;
 }
 
+/* --- Book Section Headers --- */
+.book-section-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 4px 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary-light);
+  margin-top: 8px;
+}
+.book-section-header i {
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
 /* --- Word Cards --- */
 .word-card {
   background: var(--surface);
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  border-left: 4px solid var(--primary);
-  padding: 24px;
+  padding: 20px 22px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
@@ -421,12 +438,11 @@ ul { list-style: none; }
 .word-card.animate-in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease;
 }
 .word-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
-  border-left-color: var(--secondary);
 }
 .word-card:focus-visible {
   outline: 2px solid var(--primary);
@@ -437,14 +453,14 @@ ul { list-style: none; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .card-pos {
   display: inline-block;
-  padding: 3px 12px;
+  padding: 3px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -452,80 +468,100 @@ ul { list-style: none; }
   color: white;
 }
 
-.card-ref {
-  font-size: 0.78rem;
-  color: var(--accent);
+.card-book {
+  font-size: 0.72rem;
+  color: var(--primary);
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
+  background: var(--primary-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
 }
-.card-ref i { font-size: 0.7rem; }
+.card-book i { font-size: 0.65rem; }
+
+/* Hebrew word row with audio */
+.card-hebrew-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
 
 .card-hebrew {
   font-family: var(--font-he);
-  font-size: 2.2rem;
+  font-size: 2rem;
   direction: rtl;
-  text-align: right;
   color: var(--primary);
   font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 4px;
+  line-height: 1.3;
 }
 
+.card-audio-btn {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.card-audio-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Transliteration row (English · Malayalam) */
+.card-translit-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
 .card-transliteration {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-style: italic;
   color: var(--text-secondary);
   font-weight: 500;
 }
-
-.card-pronunciation {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  font-style: italic;
-  margin-bottom: 12px;
-  opacity: 0.7;
+.card-translit-sep {
+  color: var(--border);
+  font-weight: 300;
+}
+.card-ml-translit {
+  font-family: var(--font-ml);
+  font-size: 0.95rem;
+  color: var(--secondary);
+  font-weight: 500;
 }
 
-.card-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 12px 0;
-}
-
+/* Meanings */
 .card-meanings { margin-top: 0; }
 .meaning-en {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--text);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.5;
 }
-.meaning-en strong { color: var(--text-secondary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.3px; }
 
 .card-malayalam {
   font-family: var(--font-ml);
-  font-size: 1.05rem;
-  color: var(--text);
-  margin-bottom: 4px;
-  line-height: 1.6;
-}
-.card-malayalam strong { font-family: var(--font-en); color: var(--text-secondary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.3px; }
-
-.card-ml-meaning {
-  font-family: var(--font-ml);
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin-bottom: 12px;
 }
 
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
-}
+/* Tags (only in modal now) */
 .tag-pill {
   font-size: 0.68rem;
   padding: 3px 10px;
@@ -612,22 +648,32 @@ body.modal-open { overflow: hidden; }
 
 .modal-nav {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
 }
-.modal-nav button {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+.modal-nav-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   color: var(--text-secondary);
   background: var(--tag-bg);
   font-size: 0.85rem;
+  font-weight: 500;
   transition: all 0.2s;
+  cursor: pointer;
 }
-.modal-nav button:hover { background: var(--primary-light); color: var(--primary); }
-.modal-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+.modal-nav-btn:hover { background: var(--primary-light); color: var(--primary); }
+.modal-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.modal-nav-count {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
 
 .modal-body { padding: 24px; }
 
@@ -716,21 +762,63 @@ body.modal-open { overflow: hidden; }
 .modal-pron-guide p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 
 /* JS-generated modal content classes */
-.modal-hebrew {
-  font-family: var(--font-he);
-  font-size: 3.5rem;
-  direction: rtl;
-  text-align: center;
-  color: var(--primary);
-  font-weight: 700;
-  line-height: 1.4;
+.modal-hebrew-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   margin-bottom: 8px;
 }
+.modal-hebrew {
+  font-family: var(--font-he);
+  font-size: 3.2rem;
+  direction: rtl;
+  color: var(--primary);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.modal-audio-btn {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.modal-audio-btn:hover {
+  background: var(--primary);
+  color: white;
+  transform: scale(1.1);
+}
+.modal-translit-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
 .modal-translit {
-  text-align: center;
   font-size: 1.3rem;
   font-style: italic;
   color: var(--text-secondary);
+  font-weight: 500;
+}
+.modal-translit-sep {
+  color: var(--border);
+  font-weight: 300;
+}
+.modal-ml-translit {
+  font-family: var(--font-ml);
+  font-size: 1.15rem;
+  color: var(--secondary);
   font-weight: 500;
 }
 .modal-pronunciation {
@@ -749,23 +837,16 @@ body.modal-open { overflow: hidden; }
   border-top: 1px solid var(--border);
   margin: 16px 0;
 }
-.modal-meaning-row { margin-bottom: 8px; }
-.modal-meaning-en { font-size: 1rem; line-height: 1.7; }
-.modal-meaning-en strong { color: var(--text-secondary); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
-.modal-meaning-ml { font-family: var(--font-ml); font-size: 1.15rem; line-height: 1.7; }
-.modal-meaning-ml strong { color: var(--text-secondary); font-family: var(--font-en); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
-.modal-ml-meaning { font-family: var(--font-ml); font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+.modal-meaning-row {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background: var(--tag-bg);
+  border-radius: var(--radius-sm);
+}
+.modal-meaning-en { font-size: 1rem; line-height: 1.7; color: var(--text); }
+.modal-meaning-ml { font-family: var(--font-ml); font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary); }
 .modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .modal-tags .tag-pill { font-size: 0.78rem; padding: 4px 14px; }
-.modal-pronunc-guide {
-  margin-top: 16px;
-  padding: 16px;
-  background: var(--primary-light);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--primary);
-}
-.dark-mode .modal-pronunc-guide { border-color: var(--border); }
-.modal-pronunc-note { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
 
 /* --- Pronunciation Guide Section --- */
 .pronunciation-section {
@@ -938,9 +1019,11 @@ body.modal-open { overflow: hidden; }
   .dictionary-section { padding: 20px 16px 48px; }
   #dictionary-grid { grid-template-columns: 1fr; gap: 16px; }
 
-  .word-card { padding: 20px; }
-  .card-hebrew { font-size: 1.8rem; }
-  .card-transliteration { font-size: 1rem; }
+  .word-card { padding: 16px; }
+  .card-hebrew { font-size: 1.7rem; }
+  .card-transliteration { font-size: 0.9rem; }
+  .card-ml-translit { font-size: 0.85rem; }
+  .book-section-header { font-size: 1rem; padding: 12px 4px 6px; }
 
   #modal-container { border-radius: 16px 16px 0 0; max-height: 90vh; margin-top: auto; }
   #modal-overlay { align-items: flex-end; padding: 0; }
@@ -960,7 +1043,8 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 380px) {
   .hero h2 { font-size: 1.3rem; }
   .stat-number { font-size: 1.2rem; }
-  .card-hebrew { font-size: 1.5rem; }
+  .card-hebrew { font-size: 1.4rem; }
+  .card-ml-translit { font-size: 0.8rem; }
   .book-pill { font-size: 0.72rem; padding: 5px 10px; }
 }
 

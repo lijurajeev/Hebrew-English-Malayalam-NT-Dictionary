@@ -3,6 +3,9 @@
 // Ordered by first appearance (Matthew through Revelation)
 
 const DICTIONARY_DATA = [
+// === INTRODUCTORY ENTRIES ===
+{id:-2,hebrew:"הַבְּרִית הַחֲדָשָׁה",transliteration:"HaBrit HaChadashah",pronunciation:"hah-BREET hah-chah-dah-SHAH",partOfSpeech:"noun",meanings:[{en:"The New Testament, the new covenant",ml:"പുതിയ നിയമം, നവ ഉടമ്പടി"}],mlMeaning:"",firstBook:"Matthew",firstRef:"Introduction",tags:["covenant","scripture"]},
+{id:-1,hebrew:"מַתָּי",transliteration:"Mattai",pronunciation:"mah-TIE",partOfSpeech:"proper noun",meanings:[{en:"Matthew, gift of the LORD",ml:"മത്തായി, കർത്താവിന്റെ ദാനം"}],mlMeaning:"",firstBook:"Matthew",firstRef:"Title",tags:["names","apostles"]},
 // === MATTHEW (Words 1-120) ===
 {id:1,hebrew:"סֵפֶר",transliteration:"sefer",pronunciation:"SEH-fer",partOfSpeech:"noun",meanings:[{en:"book, scroll, document, record",ml:"പുസ്തകം, ചുരുൾ, രേഖ"}],mlMeaning:"എഴുതപ്പെട്ട രേഖ അല്ലെങ്കിൽ ചുരുൾ",firstBook:"Matthew",firstRef:"Matt 1:1",tags:["scripture","writing"]},
 {id:2,hebrew:"תּוֹלְדוֹת",transliteration:"toledot",pronunciation:"to-le-DOT",partOfSpeech:"noun",meanings:[{en:"generations, genealogy, history, account",ml:"തലമുറകൾ, വംശാവലി"}],mlMeaning:"കുടുംബ ചരിത്രം അല്ലെങ്കിൽ പരമ്പരയുടെ രേഖ",firstBook:"Matthew",firstRef:"Matt 1:1",tags:["family","history"]},

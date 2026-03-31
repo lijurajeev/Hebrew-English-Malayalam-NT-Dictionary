@@ -291,40 +291,6 @@ ul { list-style: none; }
   gap: 12px;
 }
 
-/* Book pills */
-.book-pills-wrapper {
-  overflow-x: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  margin: 0 -24px;
-  padding: 0 24px;
-  max-width: calc(100% + 48px);
-}
-.book-pills-wrapper::-webkit-scrollbar { display: none; }
-
-#book-pills {
-  display: flex;
-  gap: 8px;
-  padding-bottom: 4px;
-  width: max-content;
-}
-.book-pill {
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  font-size: 0.78rem;
-  font-weight: 600;
-  white-space: nowrap;
-  background: var(--tag-bg);
-  color: var(--text-secondary);
-  border: 1px solid transparent;
-  transition: all 0.2s;
-}
-.book-pill:hover { background: var(--primary-light); color: var(--primary); }
-.book-pill.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
 
 /* Filter controls row */
 .filter-controls {
@@ -1118,7 +1084,6 @@ body.modal-open { overflow: hidden; }
   .hero-heading-main { font-size: 1.2rem; }
   .card-hebrew { font-size: 1.4rem; }
   .card-ml-translit { font-size: 0.8rem; }
-  .book-pill { font-size: 0.72rem; padding: 5px 10px; }
 }
 
 /* Print */

@@ -151,42 +151,42 @@
     <section class="filter-bar" id="filter-bar" aria-label="Filter and sort options">
       <div class="filter-bar-inner container">
 
-        <!-- Book Filter Pills (horizontal scroll) -->
-        <div class="filter-group filter-group--books" role="group" aria-label="Filter by NT book">
-          <div class="book-pills-scroll" id="book-pills" role="list">
-            <button class="book-pill active" data-book="all" role="listitem" type="button" aria-pressed="true">All</button>
-            <button class="book-pill" data-book="matthew" role="listitem" type="button" aria-pressed="false">Matthew</button>
-            <button class="book-pill" data-book="mark" role="listitem" type="button" aria-pressed="false">Mark</button>
-            <button class="book-pill" data-book="luke" role="listitem" type="button" aria-pressed="false">Luke</button>
-            <button class="book-pill" data-book="john" role="listitem" type="button" aria-pressed="false">John</button>
-            <button class="book-pill" data-book="acts" role="listitem" type="button" aria-pressed="false">Acts</button>
-            <button class="book-pill" data-book="romans" role="listitem" type="button" aria-pressed="false">Romans</button>
-            <button class="book-pill" data-book="1corinthians" role="listitem" type="button" aria-pressed="false">1 Cor</button>
-            <button class="book-pill" data-book="2corinthians" role="listitem" type="button" aria-pressed="false">2 Cor</button>
-            <button class="book-pill" data-book="galatians" role="listitem" type="button" aria-pressed="false">Galatians</button>
-            <button class="book-pill" data-book="ephesians" role="listitem" type="button" aria-pressed="false">Ephesians</button>
-            <button class="book-pill" data-book="philippians" role="listitem" type="button" aria-pressed="false">Philippians</button>
-            <button class="book-pill" data-book="colossians" role="listitem" type="button" aria-pressed="false">Colossians</button>
-            <button class="book-pill" data-book="1thessalonians" role="listitem" type="button" aria-pressed="false">1 Thess</button>
-            <button class="book-pill" data-book="2thessalonians" role="listitem" type="button" aria-pressed="false">2 Thess</button>
-            <button class="book-pill" data-book="1timothy" role="listitem" type="button" aria-pressed="false">1 Tim</button>
-            <button class="book-pill" data-book="2timothy" role="listitem" type="button" aria-pressed="false">2 Tim</button>
-            <button class="book-pill" data-book="titus" role="listitem" type="button" aria-pressed="false">Titus</button>
-            <button class="book-pill" data-book="philemon" role="listitem" type="button" aria-pressed="false">Philemon</button>
-            <button class="book-pill" data-book="hebrews" role="listitem" type="button" aria-pressed="false">Hebrews</button>
-            <button class="book-pill" data-book="james" role="listitem" type="button" aria-pressed="false">James</button>
-            <button class="book-pill" data-book="1peter" role="listitem" type="button" aria-pressed="false">1 Peter</button>
-            <button class="book-pill" data-book="2peter" role="listitem" type="button" aria-pressed="false">2 Peter</button>
-            <button class="book-pill" data-book="1john" role="listitem" type="button" aria-pressed="false">1 John</button>
-            <button class="book-pill" data-book="2john" role="listitem" type="button" aria-pressed="false">2 John</button>
-            <button class="book-pill" data-book="3john" role="listitem" type="button" aria-pressed="false">3 John</button>
-            <button class="book-pill" data-book="jude" role="listitem" type="button" aria-pressed="false">Jude</button>
-            <button class="book-pill" data-book="revelation" role="listitem" type="button" aria-pressed="false">Revelation</button>
-          </div>
-        </div>
-
         <!-- Dropdowns + Sort + Clear -->
         <div class="filter-controls">
+          <!-- Book Filter -->
+          <div class="filter-select-wrap">
+            <label for="book-filter" class="sr-only">Filter by book</label>
+            <select id="book-filter" class="filter-select" aria-label="Filter by NT book">
+              <option value="all">All Books</option>
+              <option value="Matthew">Matthew</option>
+              <option value="Mark">Mark</option>
+              <option value="Luke">Luke</option>
+              <option value="John">John</option>
+              <option value="Acts">Acts</option>
+              <option value="Romans">Romans</option>
+              <option value="1 Corinthians">1 Corinthians</option>
+              <option value="2 Corinthians">2 Corinthians</option>
+              <option value="Galatians">Galatians</option>
+              <option value="Ephesians">Ephesians</option>
+              <option value="Philippians">Philippians</option>
+              <option value="Colossians">Colossians</option>
+              <option value="1 Thessalonians">1 Thessalonians</option>
+              <option value="2 Thessalonians">2 Thessalonians</option>
+              <option value="1 Timothy">1 Timothy</option>
+              <option value="2 Timothy">2 Timothy</option>
+              <option value="Titus">Titus</option>
+              <option value="Philemon">Philemon</option>
+              <option value="Hebrews">Hebrews</option>
+              <option value="James">James</option>
+              <option value="1 Peter">1 Peter</option>
+              <option value="2 Peter">2 Peter</option>
+              <option value="1 John">1 John</option>
+              <option value="2 John">2 John</option>
+              <option value="3 John">3 John</option>
+              <option value="Jude">Jude</option>
+              <option value="Revelation">Revelation</option>
+            </select>
+          </div>
           <!-- Part of Speech -->
           <div class="filter-select-wrap">
             <label for="pos-filter" class="sr-only">Filter by part of speech</label>

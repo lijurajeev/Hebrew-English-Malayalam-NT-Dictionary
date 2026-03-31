@@ -328,7 +328,7 @@ function cacheDOMRefs() {
     wordCount:      document.getElementById('word-count'),
     visibleCount:   document.getElementById('visible-count'),
     noResultsMsg:   document.getElementById('no-results-msg'),
-    bookFilters:    document.getElementById('book-pills'),
+    bookFilter:     document.getElementById('book-filter'),
     modalOverlay:   document.getElementById('modal-overlay'),
     modalContent:   document.getElementById('modal-content'),
     modalClose:     document.getElementById('modal-close'),
@@ -367,72 +367,18 @@ function renderStatistics() {
 // Book Filter Pills
 // ---------------------------------------------------------------------------
 
-function setupBookPills() {
-  if (!dom.bookFilters) return;
+function setupBookFilter() {
+  if (!dom.bookFilter) return;
 
-  dom.bookFilters.querySelectorAll('.book-pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      const bookVal = pill.dataset.book;
-      if (bookVal === 'all') {
-        // Clear all book filters
-        state.activeBooks.clear();
-        dom.bookFilters.querySelectorAll('.book-pill').forEach(p => {
-          p.classList.remove('active');
-          p.setAttribute('aria-pressed', 'false');
-        });
-        pill.classList.add('active');
-        pill.setAttribute('aria-pressed', 'true');
-      } else {
-        // Remove "All" active state
-        const allPill = dom.bookFilters.querySelector('[data-book="all"]');
-        if (allPill) {
-          allPill.classList.remove('active');
-          allPill.setAttribute('aria-pressed', 'false');
-        }
-        // Map data-book attribute to firstBook values
-        const bookName = bookVal.replace(/^(\d)/, '$1 ')
-          .replace('corinthians', 'Corinthians')
-          .replace('thessalonians', 'Thessalonians')
-          .replace('timothy', 'Timothy')
-          .replace('peter', 'Peter')
-          .replace('john', 'John')
-          .replace(/^matthew$/i, 'Matthew')
-          .replace(/^mark$/i, 'Mark')
-          .replace(/^luke$/i, 'Luke')
-          .replace(/^john$/i, 'John')
-          .replace(/^acts$/i, 'Acts')
-          .replace(/^romans$/i, 'Romans')
-          .replace(/^galatians$/i, 'Galatians')
-          .replace(/^ephesians$/i, 'Ephesians')
-          .replace(/^philippians$/i, 'Philippians')
-          .replace(/^colossians$/i, 'Colossians')
-          .replace(/^titus$/i, 'Titus')
-          .replace(/^philemon$/i, 'Philemon')
-          .replace(/^hebrews$/i, 'Hebrews')
-          .replace(/^james$/i, 'James')
-          .replace(/^jude$/i, 'Jude')
-          .replace(/^revelation$/i, 'Revelation');
-        toggleBookFilter(bookName, pill);
-        return; // toggleBookFilter calls applyFilters
-      }
-      applyFilters();
-      updateURLHash();
-    });
+  dom.bookFilter.addEventListener('change', () => {
+    const val = dom.bookFilter.value;
+    state.activeBooks.clear();
+    if (val !== 'all') {
+      state.activeBooks.add(val);
+    }
+    applyFilters();
+    updateURLHash();
   });
-}
-
-function toggleBookFilter(book, pillEl) {
-  if (state.activeBooks.has(book)) {
-    state.activeBooks.delete(book);
-    pillEl.classList.remove('active');
-    pillEl.setAttribute('aria-pressed', 'false');
-  } else {
-    state.activeBooks.add(book);
-    pillEl.classList.add('active');
-    pillEl.setAttribute('aria-pressed', 'true');
-  }
-  applyFilters();
-  updateURLHash();
 }
 
 // ---------------------------------------------------------------------------
@@ -1123,13 +1069,9 @@ function handleInitialHash() {
     const book = decodeURIComponent(hash.slice(6));
     if (NT_BOOKS.includes(book)) {
       state.activeBooks.add(book);
-      // Activate the corresponding pill
-      if (dom.bookFilters) {
-        const pill = dom.bookFilters.querySelector(`[data-book="${CSS.escape(book)}"]`);
-        if (pill) {
-          pill.classList.add('active');
-          pill.setAttribute('aria-pressed', 'true');
-        }
+      // Set the dropdown to the corresponding book
+      if (dom.bookFilter) {
+        dom.bookFilter.value = book;
       }
       applyFilters();
     }
@@ -1153,18 +1095,8 @@ function clearAllFilters() {
   if (dom.tagFilter)   dom.tagFilter.value   = 'all';
   if (dom.sortSelect)  dom.sortSelect.value  = 'appearance';
 
-  // Deactivate all book pills and activate "All"
-  if (dom.bookFilters) {
-    dom.bookFilters.querySelectorAll('.book-pill').forEach(p => {
-      p.classList.remove('active');
-      p.setAttribute('aria-pressed', 'false');
-    });
-    const allPill = dom.bookFilters.querySelector('[data-book="all"]');
-    if (allPill) {
-      allPill.classList.add('active');
-      allPill.setAttribute('aria-pressed', 'true');
-    }
-  }
+  // Reset book dropdown
+  if (dom.bookFilter) dom.bookFilter.value = 'all';
 
   history.replaceState(null, '', window.location.pathname);
   applyFilters();
@@ -1284,7 +1216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   state.filtered = state.allData.slice();
 
   // Setup UI components
-  setupBookPills();
+  setupBookFilter();
   populateTagFilter();
   // Stats are already in the HTML; pronunciation guide tables are already rendered in HTML
 

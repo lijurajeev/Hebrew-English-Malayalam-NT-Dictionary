@@ -279,6 +279,7 @@ ul { list-style: none; }
   border-bottom: 1px solid var(--border);
   padding: 12px 24px;
   transition: background 0.3s, border-color 0.3s;
+  overflow-x: hidden;
 }
 .dark-mode .filter-bar { background: rgba(15,23,42,0.9); }
 
@@ -297,6 +298,7 @@ ul { list-style: none; }
   scrollbar-width: none;
   margin: 0 -24px;
   padding: 0 24px;
+  max-width: calc(100% + 48px);
 }
 .book-pills-wrapper::-webkit-scrollbar { display: none; }
 

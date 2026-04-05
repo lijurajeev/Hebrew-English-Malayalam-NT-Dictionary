@@ -225,6 +225,7 @@ ul { list-style: none; }
 }
 
 /* Audio Tip — inline banner for Windows users */
+.audio-tip-inline[hidden] { display: none; }
 .audio-tip-inline {
   display: flex;
   align-items: center;

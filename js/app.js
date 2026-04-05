@@ -301,53 +301,49 @@ function mapSyllableToMalayalam(syl) {
 // ---------------------------------------------------------------------------
 
 let hebrewVoice = null;
-let voicesReady = false;
 
-function initVoices() {
+function findHebrewVoice() {
   if (!window.speechSynthesis) return;
   const voices = window.speechSynthesis.getVoices();
-  if (voices.length) {
-    voicesReady = true;
-    hebrewVoice = voices.find(v => v.lang.startsWith('he')) || null;
-  }
+  hebrewVoice = voices.find(v => v.lang.startsWith('he')) || null;
 }
 
-// Chrome loads voices async
 if (window.speechSynthesis) {
-  initVoices();
-  window.speechSynthesis.onvoiceschanged = initVoices;
+  findHebrewVoice();
+  window.speechSynthesis.onvoiceschanged = findHebrewVoice;
+}
+
+function doSpeak(text, lang, rate, voice) {
+  const synth = window.speechSynthesis;
+  if (!synth) return;
+  // Chrome bug: cancel() then speak() fails. Use pause/resume workaround.
+  synth.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang;
+  utter.rate = rate;
+  if (voice) utter.voice = voice;
+  // Delay speak slightly to work around Chrome cancel() bug
+  setTimeout(function() { synth.speak(utter); }, 50);
 }
 
 function speakHebrew(hebrewText, pronunciation) {
   if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
 
-  // Try Hebrew voice first
+  // If Hebrew voice available, use it
   if (hebrewVoice) {
-    const utter = new SpeechSynthesisUtterance(hebrewText);
-    utter.voice = hebrewVoice;
-    utter.lang = 'he-IL';
-    utter.rate = 0.7;
-    window.speechSynthesis.speak(utter);
+    doSpeak(hebrewText, 'he-IL', 0.7, hebrewVoice);
     return;
   }
 
-  // Fallback: speak the pronunciation guide with English voice
+  // Fallback: speak pronunciation in English
   if (pronunciation) {
-    // Clean up pronunciation for speech: remove stress markers, hyphens
-    const cleaned = pronunciation.replace(/[-]/g, ' ').toLowerCase();
-    const utter = new SpeechSynthesisUtterance(cleaned);
-    utter.lang = 'en-US';
-    utter.rate = 0.6;
-    window.speechSynthesis.speak(utter);
+    var cleaned = pronunciation.replace(/-/g, ' ').toLowerCase();
+    doSpeak(cleaned, 'en-US', 0.6, null);
     return;
   }
 
-  // Last resort: try Hebrew text with default voice
-  const utter = new SpeechSynthesisUtterance(hebrewText);
-  utter.lang = 'he-IL';
-  utter.rate = 0.7;
-  window.speechSynthesis.speak(utter);
+  // Last resort
+  doSpeak(hebrewText, 'he-IL', 0.7, null);
 }
 
 // ---------------------------------------------------------------------------

@@ -329,15 +329,15 @@ function showAudioTipIfNeeded() {
 function doSpeak(text, lang, rate, voice) {
   const synth = window.speechSynthesis;
   if (!synth) return;
-  synth.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = lang;
   utter.rate = rate;
   if (voice) utter.voice = voice;
-  // Chrome needs a delay after cancel() or speak() silently fails.
-  // Safari requires immediate speak() from user gesture — no delay.
-  var isChrome = /Chrome/.test(navigator.userAgent) && !/Edg/.test(navigator.userAgent);
-  if (isChrome) {
+  // Windows Chrome: cancel() then speak() silently fails without a delay.
+  // Mac/other: speak directly — cancel+delay breaks audio on Mac Chrome & Safari.
+  var isWindows = /Windows/.test(navigator.userAgent);
+  if (isWindows) {
+    synth.cancel();
     setTimeout(function() { synth.speak(utter); }, 50);
   } else {
     synth.speak(utter);

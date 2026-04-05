@@ -301,47 +301,53 @@ function mapSyllableToMalayalam(syl) {
 // ---------------------------------------------------------------------------
 
 let hebrewVoice = null;
-let voicesLoaded = false;
+let voicesReady = false;
 
-function loadVoices() {
+function initVoices() {
+  if (!window.speechSynthesis) return;
   const voices = window.speechSynthesis.getVoices();
   if (voices.length) {
-    voicesLoaded = true;
-    // Prefer a Hebrew voice
+    voicesReady = true;
     hebrewVoice = voices.find(v => v.lang.startsWith('he')) || null;
   }
 }
 
-function speakHebrew(text) {
+// Chrome loads voices async
+if (window.speechSynthesis) {
+  initVoices();
+  window.speechSynthesis.onvoiceschanged = initVoices;
+}
+
+function speakHebrew(hebrewText, pronunciation) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
 
-  // Chrome loads voices async — ensure they're loaded
-  if (!voicesLoaded) {
-    loadVoices();
-    if (!voicesLoaded) {
-      // Voices not ready yet — wait and retry once
-      window.speechSynthesis.onvoiceschanged = () => {
-        loadVoices();
-        speakHebrew(text);
-      };
-      return;
-    }
+  // Try Hebrew voice first
+  if (hebrewVoice) {
+    const utter = new SpeechSynthesisUtterance(hebrewText);
+    utter.voice = hebrewVoice;
+    utter.lang = 'he-IL';
+    utter.rate = 0.7;
+    window.speechSynthesis.speak(utter);
+    return;
   }
 
-  const utter = new SpeechSynthesisUtterance(text);
+  // Fallback: speak the pronunciation guide with English voice
+  if (pronunciation) {
+    // Clean up pronunciation for speech: remove stress markers, hyphens
+    const cleaned = pronunciation.replace(/[-]/g, ' ').toLowerCase();
+    const utter = new SpeechSynthesisUtterance(cleaned);
+    utter.lang = 'en-US';
+    utter.rate = 0.6;
+    window.speechSynthesis.speak(utter);
+    return;
+  }
+
+  // Last resort: try Hebrew text with default voice
+  const utter = new SpeechSynthesisUtterance(hebrewText);
   utter.lang = 'he-IL';
   utter.rate = 0.7;
-  if (hebrewVoice) utter.voice = hebrewVoice;
   window.speechSynthesis.speak(utter);
-}
-
-// Pre-load voices on init
-if (window.speechSynthesis) {
-  loadVoices();
-  if (!voicesLoaded) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -570,7 +576,7 @@ function buildCardElement(entry, index) {
   if (audioBtn) {
     audioBtn.addEventListener('click', e => {
       e.stopPropagation();
-      speakHebrew(entry.hebrew);
+      speakHebrew(entry.hebrew, entry.pronunciation);
     });
   }
 
@@ -800,7 +806,7 @@ function openModal(entry) {
   // Wire up modal audio button
   const modalAudioBtn = dom.modalContent.querySelector('.modal-audio-btn');
   if (modalAudioBtn) {
-    modalAudioBtn.addEventListener('click', () => speakHebrew(entry.hebrew));
+    modalAudioBtn.addEventListener('click', () => speakHebrew(entry.hebrew, entry.pronunciation));
   }
 
   // Close button is in the HTML (outside modal-content), so no need to re-cache

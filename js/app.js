@@ -300,13 +300,48 @@ function mapSyllableToMalayalam(syl) {
 // Hebrew Audio Pronunciation (Web Speech API)
 // ---------------------------------------------------------------------------
 
+let hebrewVoice = null;
+let voicesLoaded = false;
+
+function loadVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length) {
+    voicesLoaded = true;
+    // Prefer a Hebrew voice
+    hebrewVoice = voices.find(v => v.lang.startsWith('he')) || null;
+  }
+}
+
 function speakHebrew(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+
+  // Chrome loads voices async — ensure they're loaded
+  if (!voicesLoaded) {
+    loadVoices();
+    if (!voicesLoaded) {
+      // Voices not ready yet — wait and retry once
+      window.speechSynthesis.onvoiceschanged = () => {
+        loadVoices();
+        speakHebrew(text);
+      };
+      return;
+    }
+  }
+
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'he-IL';
   utter.rate = 0.7;
+  if (hebrewVoice) utter.voice = hebrewVoice;
   window.speechSynthesis.speak(utter);
+}
+
+// Pre-load voices on init
+if (window.speechSynthesis) {
+  loadVoices();
+  if (!voicesLoaded) {
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
 }
 
 // ---------------------------------------------------------------------------

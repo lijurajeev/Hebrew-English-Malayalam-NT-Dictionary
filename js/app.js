@@ -1091,7 +1091,7 @@ function navigateCards(key) {
 
 function setupFeedbackModal() {
   // UPDATE THIS EMAIL to receive feedback submissions
-  var FEEDBACK_EMAIL = 'your-email@example.com';
+  var FEEDBACK_EMAIL = 'lijurajeev@gmail.com';
 
   var fab = document.getElementById('feedback-fab');
   var overlay = document.getElementById('feedback-overlay');

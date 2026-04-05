@@ -190,11 +190,11 @@ ul { list-style: none; }
 }
 .hero-heading-main { font-size: 1.4rem; }
 .hero-description {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
-  margin: 0 auto 12px;
+  margin: 0 auto 10px;
   max-width: 520px;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* Stats bar */
@@ -243,7 +243,7 @@ ul { list-style: none; }
   max-width: 320px;
   line-height: 1.4;
 }
-.audio-tip-win { color: #0078d4; font-size: 0.9rem; flex-shrink: 0; }
+.audio-tip-win { color: #0078d4; font-size: 1.3rem; flex-shrink: 0; }
 .audio-tip-text { margin: 0; }
 .audio-tip-link { color: var(--primary); font-weight: 600; text-decoration: underline; }
 .audio-tip-dismiss {

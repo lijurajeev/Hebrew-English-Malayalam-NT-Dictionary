@@ -313,6 +313,19 @@ if (window.speechSynthesis) {
   window.speechSynthesis.onvoiceschanged = findHebrewVoice;
 }
 
+// Show audio tip on Windows if no Hebrew voice found
+function showAudioTipIfNeeded() {
+  if (!navigator.userAgent.includes('Windows')) return;
+  if (localStorage.getItem('audioTipDismissed')) return;
+  // Wait for voices to load, then check
+  setTimeout(function() {
+    if (!hebrewVoice) {
+      var tip = document.getElementById('audio-tip');
+      if (tip) tip.hidden = false;
+    }
+  }, 1000);
+}
+
 function doSpeak(text, lang, rate, voice) {
   const synth = window.speechSynthesis;
   if (!synth) return;
@@ -1265,6 +1278,17 @@ document.addEventListener('DOMContentLoaded', () => {
   setupBackToTop();
   setupMobileMenu();
   setupKeyboardShortcuts();
+
+  // Audio tip for Windows users
+  showAudioTipIfNeeded();
+  var dismissBtn = document.getElementById('audio-tip-dismiss');
+  if (dismissBtn) {
+    dismissBtn.addEventListener('click', function() {
+      var tip = document.getElementById('audio-tip');
+      if (tip) tip.hidden = true;
+      localStorage.setItem('audioTipDismissed', '1');
+    });
+  }
 
   // Render cards (replaces skeletons)
   // Use a short rAF delay to let the skeleton paint first for a visible effect

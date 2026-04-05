@@ -48,6 +48,7 @@
         <a href="#" class="brand-link" aria-label="Home">
           <i class="fa-solid fa-scroll brand-icon" aria-hidden="true"></i>
           <span class="brand-title">Hebrew NT Dictionary</span>
+          <span class="beta-badge">BETA</span>
         </a>
       </div>
 
@@ -119,9 +120,9 @@
             <span lang="ml">മലയാളം</span> (Malayalam) translations — an
             invaluable resource for Bible study students.
           </p>
-          <div class="audio-tip" id="audio-tip" hidden>
-            <i class="fa-brands fa-windows audio-tip-win"></i>
-            <span class="audio-tip-text">For Hebrew audio, <a href="ms-settings:regionlanguage" class="audio-tip-link">add the Hebrew language pack</a> in Windows Settings.</span>
+          <div class="audio-tip-inline" id="audio-tip" hidden>
+            <i class="fa-brands fa-windows audio-tip-icon"></i>
+            <span>For Hebrew audio, <a href="ms-settings:regionlanguage" class="audio-tip-link">add the Hebrew language pack</a> in Windows Settings.</span>
             <button class="audio-tip-dismiss" id="audio-tip-dismiss" aria-label="Dismiss">&times;</button>
           </div>
         </div>
@@ -702,12 +703,53 @@
         </div>
       </div>
       <div class="footer-divider"></div>
+      <div class="footer-beta">
+        <span class="footer-beta-badge">BETA</span>
+        <span>This app is in beta. Found a bug or have feedback? <button class="inline-link" id="footer-feedback-btn" type="button">Let us know</button> — we'd love to hear from you!</span>
+      </div>
+      <div class="footer-divider"></div>
       <div class="footer-bottom">
         <p class="footer-source">Based on the <em>Delitzsch Hebrew New Testament</em></p>
         <p class="footer-copyright">&copy; 2025 Biblical Hebrew NT Dictionary</p>
       </div>
     </div>
   </footer>
+
+  <!-- ===================================================
+       FEEDBACK FAB + MODAL
+  ==================================================== -->
+  <button class="feedback-fab" id="feedback-fab" type="button" aria-label="Send feedback">
+    <i class="fa-solid fa-comment-dots" aria-hidden="true"></i>
+  </button>
+
+  <div class="feedback-overlay" id="feedback-overlay" aria-hidden="true">
+    <div class="feedback-modal">
+      <div class="feedback-header">
+        <h3 class="feedback-title"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Send Feedback</h3>
+        <button class="feedback-close" id="feedback-close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <form id="feedback-form" class="feedback-body">
+        <div class="feedback-type-group">
+          <label class="feedback-type-option">
+            <input type="radio" name="feedback-type" value="Bug Report" checked />
+            <span><i class="fa-solid fa-bug"></i> Bug</span>
+          </label>
+          <label class="feedback-type-option">
+            <input type="radio" name="feedback-type" value="Feature Request" />
+            <span><i class="fa-solid fa-lightbulb"></i> Feature</span>
+          </label>
+          <label class="feedback-type-option">
+            <input type="radio" name="feedback-type" value="General Feedback" />
+            <span><i class="fa-solid fa-message"></i> General</span>
+          </label>
+        </div>
+        <textarea id="feedback-message" class="feedback-textarea" rows="4" placeholder="Describe the issue or suggestion…" required></textarea>
+        <button type="submit" class="feedback-submit">
+          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Send Feedback
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- ===================================================
        SCRIPTS

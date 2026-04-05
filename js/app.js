@@ -1086,6 +1086,67 @@ function navigateCards(key) {
 }
 
 // ---------------------------------------------------------------------------
+// Feedback Modal
+// ---------------------------------------------------------------------------
+
+function setupFeedbackModal() {
+  // UPDATE THIS EMAIL to receive feedback submissions
+  var FEEDBACK_EMAIL = 'your-email@example.com';
+
+  var fab = document.getElementById('feedback-fab');
+  var overlay = document.getElementById('feedback-overlay');
+  var closeBtn = document.getElementById('feedback-close');
+  var form = document.getElementById('feedback-form');
+  var footerBtn = document.getElementById('footer-feedback-btn');
+
+  if (!fab || !overlay) return;
+
+  function openFeedback() {
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    var ta = document.getElementById('feedback-message');
+    if (ta) { ta.value = ''; ta.focus(); }
+  }
+
+  function closeFeedback() {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  fab.addEventListener('click', openFeedback);
+  if (footerBtn) footerBtn.addEventListener('click', openFeedback);
+  closeBtn.addEventListener('click', closeFeedback);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeFeedback();
+  });
+
+  // Escape key closes feedback modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      closeFeedback();
+    }
+  });
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var type = form.querySelector('input[name="feedback-type"]:checked').value;
+    var message = document.getElementById('feedback-message').value.trim();
+    if (!message) return;
+
+    var subject = encodeURIComponent('[Hebrew NT Dictionary] ' + type);
+    var body = encodeURIComponent(
+      type + '\n\n' + message +
+      '\n\n---\nSent from Biblical Hebrew NT Dictionary\n' +
+      'Page: ' + window.location.href + '\n' +
+      'UA: ' + navigator.userAgent
+    );
+
+    window.location.href = 'mailto:' + FEEDBACK_EMAIL + '?subject=' + subject + '&body=' + body;
+    closeFeedback();
+  });
+}
+
+// ---------------------------------------------------------------------------
 // URL Hash Routing
 // ---------------------------------------------------------------------------
 
@@ -1289,6 +1350,9 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('audioTipDismissed', '1');
     });
   }
+
+  // --- Feedback Modal ---
+  setupFeedbackModal();
 
   // Render cards (replaces skeletons)
   // Use a short rAF delay to let the skeleton paint first for a visible effect

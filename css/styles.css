@@ -29,7 +29,7 @@
 
   /* Fonts */
   --font-en: 'Inter', system-ui, sans-serif;
-  --font-he: 'Noto Sans Hebrew', 'David Libre', serif;
+  --font-he: 'Frank Ruhl Libre', 'Noto Sans Hebrew', 'David Libre', serif;
   --font-ml: 'Noto Sans Malayalam', sans-serif;
 }
 
@@ -181,8 +181,12 @@ ul { list-style: none; }
 }
 .hero-hebrew {
   display: block;
-  font-size: 1.1rem;
+  font-family: 'Frank Ruhl Libre', 'Noto Sans Hebrew', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
   margin-bottom: 2px;
+  -webkit-text-fill-color: var(--text-primary);
+  background: none;
 }
 .hero-heading-main { font-size: 1.4rem; }
 .hero-description {
@@ -220,10 +224,10 @@ ul { list-style: none; }
   font-weight: 600;
 }
 
-/* Audio Tip Banner — small bottom-right toast */
+/* Audio Tip Banner — small top-right toast */
 .audio-tip {
   position: fixed;
-  bottom: 80px;
+  top: 70px;
   right: 20px;
   z-index: 999;
   display: flex;

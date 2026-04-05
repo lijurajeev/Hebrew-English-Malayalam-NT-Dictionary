@@ -217,37 +217,79 @@ ul { list-style: none; }
 
 /* Audio Tip Banner */
 .audio-tip {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  background: rgba(59,130,246,0.08);
-  border: 1px solid rgba(59,130,246,0.2);
-  border-radius: var(--radius);
-  padding: 12px 16px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 16px;
-  max-width: 600px;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(0,120,215,0.06) 0%, rgba(59,130,246,0.1) 100%);
+  border: 1px solid rgba(0,120,215,0.18);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-top: 20px;
+  max-width: 540px;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.5;
+  text-align: left;
 }
-.audio-tip i { color: var(--primary); margin-top: 3px; flex-shrink: 0; }
+.audio-tip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0078d4, #00a4ef);
+  flex-shrink: 0;
+}
+.audio-tip-icon i {
+  font-size: 1.3rem;
+  color: white;
+}
+.audio-tip-content { flex: 1; }
+.audio-tip-title {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.audio-tip-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+.audio-tip-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.audio-tip-step { display: block; }
+.audio-tip-step strong { color: var(--primary); margin-right: 2px; }
 .audio-tip-link { color: var(--primary); font-weight: 600; text-decoration: underline; }
 .audio-tip-dismiss {
+  position: absolute;
+  top: 10px;
+  right: 12px;
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  padding: 0 0 0 8px;
   line-height: 1;
-  opacity: 0.6;
+  opacity: 0.4;
+  transition: opacity 0.2s;
 }
 .audio-tip-dismiss:hover { opacity: 1; }
 .dark-mode .audio-tip {
-  background: rgba(59,130,246,0.1);
-  border-color: rgba(59,130,246,0.25);
+  background: linear-gradient(135deg, rgba(0,120,215,0.1) 0%, rgba(59,130,246,0.12) 100%);
+  border-color: rgba(0,120,215,0.25);
+}
+.dark-mode .audio-tip-icon {
+  background: linear-gradient(135deg, #1a8fe0, #00b4ff);
 }
 
 /* Search */
